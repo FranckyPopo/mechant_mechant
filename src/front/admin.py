@@ -12,7 +12,7 @@ class Comment(admin.ModelAdmin):
     
 @admin.register(models.Product)
 class Product(admin.ModelAdmin):
-    list_display = ["title", "active", "original_price", "created"]
+    list_display = ["name", "active", "original_price", "created"]
     
 @admin.register(models.ImageProduct)
 class ImageProduct(admin.ModelAdmin):
