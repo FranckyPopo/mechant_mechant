@@ -16,6 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from front import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.FrontIndex.as_view()),
+    path('contact/', views.FrontContact.as_view()),
+    path('products/', views.FrontProducts.as_view()),
+    path('products/product/<int:product_id>/', views.FrontDetailProduct.as_view()),
 ]
