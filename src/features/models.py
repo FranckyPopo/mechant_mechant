@@ -20,4 +20,6 @@ class ContactUs(models.Model):
     created = models.fields.DateTimeField(auto_now_add=True)
     deleted = models.fields.BooleanField(default=False)
     
+    def __str__(self) -> str:
+        return self.email
     

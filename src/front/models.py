@@ -1,7 +1,7 @@
 
-from itertools import product
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.core.validators import MaxValueValidator
 from phonenumber_field.modelfields import PhoneNumberField
 
 class Categories(models.Model):
@@ -15,18 +15,22 @@ class Categories(models.Model):
     def __str__(self) -> str:
         return self.name
 
-class Product(models.Model):
+class Products(models.Model):
     name = models.CharField(max_length=150)
     photo = models.ImageField()
     description = models.TextField()
-    original_price = models.PositiveIntegerField()
-    promotion_price = models.PositiveIntegerField()
+    original_price = models.PositiveIntegerField(validators=[MaxValueValidator(100)])
+    promotion_price = models.PositiveIntegerField(validators=[MaxValueValidator(100)])
+    promotion_percentage = models.PositiveIntegerField(validators=[MaxValueValidator(100)])
     additional_information = models.TextField()
     promotion = models.BooleanField(default=False)
     active = models.BooleanField(default=False)
     categories = models.ManyToManyField(Categories, related_name="product_categories")
     
-    # Ajouter des champs color, size, dimension, longeur largeur
+    color = models.CharField(max_length=50, blank=True)
+    size = models.CharField(max_length=50, blank=True)
+    longeur = models.CharField(max_length=50, blank=True)
+    largeur = models.CharField(max_length=50, blank=True)
     
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
@@ -35,7 +39,7 @@ class Product(models.Model):
     def __str__(self) -> str:
         return self.name
 
-class Comment(models.Model):
+class Comments(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="user_comment")
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="comment_product")
     message = models.TextField()
@@ -48,7 +52,7 @@ class Comment(models.Model):
         return self.user.username
     
 class ImageProduct(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="image_product_product")
     photo = models.ImageField()
     
     updated = models.fields.DateTimeField(auto_now=True)
@@ -60,7 +64,7 @@ class ImageProduct(models.Model):
 
 class Promotion(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="promotion_product")
-    active = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
     
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
@@ -79,7 +83,7 @@ class DealOfTheWeenk(models.Model):
 
 class BestSellers(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    active = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
     
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
@@ -98,6 +102,4 @@ class SiteContact(models.Model):
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
     deleted = models.fields.BooleanField(default=False)
-    
-    
     
