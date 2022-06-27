@@ -6,11 +6,11 @@ from front import models
 class Categories(admin.ModelAdmin):
     list_display = ["name", "active", "created"]
     
-@admin.register(models.Comment)
+@admin.register(models.Comments)
 class Comment(admin.ModelAdmin):
     list_display = ["user", "message", "created"]
     
-@admin.register(models.Product)
+@admin.register(models.Products)
 class Product(admin.ModelAdmin):
     list_display = ["name", "active", "original_price", "created"]
     

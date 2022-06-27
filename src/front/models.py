@@ -41,7 +41,7 @@ class Products(models.Model):
 
 class Comments(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="user_comment")
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="comment_product")
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="comment_product")
     message = models.TextField()
     
     updated = models.fields.DateTimeField(auto_now=True)
@@ -52,7 +52,7 @@ class Comments(models.Model):
         return self.user.username
     
 class ImageProduct(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="image_product_product")
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="image_product_product")
     photo = models.ImageField()
     
     updated = models.fields.DateTimeField(auto_now=True)
@@ -63,7 +63,7 @@ class ImageProduct(models.Model):
         return str(self.product.name)
 
 class Promotion(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="promotion_product")
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="promotion_product")
     active = models.BooleanField(default=True)
     
     updated = models.fields.DateTimeField(auto_now=True)
@@ -75,14 +75,17 @@ class Promotion(models.Model):
     
 class DealOfTheWeenk(models.Model):
     start_of_deal = models.DateTimeField()
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="DealOfTheWeenk_product")
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="DealOfTheWeenk_product")
     
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
     deleted = models.fields.BooleanField(default=False)
+    
+    def __str__(self) -> str:
+        return self.product
 
 class BestSellers(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
     
     updated = models.fields.DateTimeField(auto_now=True)
