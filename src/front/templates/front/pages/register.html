@@ -1,0 +1,51 @@
+{% extends 'front/base/base_auther.html' %}
+{% load widget_tweaks %}
+{% block 'content' %}
+
+<div class="container contact_container">
+    <div class="row">
+        <div class="col">
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Register</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-lg-6 get_in_touch_col">
+            <div class="get_in_touch_contents">
+                <h1>Register</h1>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div>
+                        {% render_field form.last_name class="form_input input_name input_ph" placeholder="Last name" required="required" data-error="Last name." %}
+
+                        {% render_field form.first_name class="form_input input_name input_ph" placeholder="First name" required="required" data-error="First name." %}
+
+                        {% render_field form.email class="form_input input_email input_ph" placeholder="Email" required="required" data-error="Email." %}
+                        
+                        {% render_field form.telephone_number class="form_input input_name input_ph" placeholder="Telephone number" required="required" data-error="Last name." %}
+                        
+                        {% render_field form.password class="form_input input_name input_ph" placeholder="Password" required="required" data-error="Last name." %}
+
+                        {% render_field form.password class="form_input input_name input_ph" placeholder="Password confimed" required="required" data-error="Comfimed password." %}
+
+
+                    </div>
+                    <div>
+                        <button id="review_submit" type="submit" class="red_button message_submit_btn trans_300" value="Submit">S'inscrire</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock 'content' %}

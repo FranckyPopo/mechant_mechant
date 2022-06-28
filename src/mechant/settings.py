@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "front",
     "authentication",
     "features",
+    "widget_tweaks",
 ]
 
 MIDDLEWARE = [

@@ -17,11 +17,15 @@ from django.contrib import admin
 from django.urls import path
 
 from front import views
+from authentication.views import AuthenticationPageRegister
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.FrontIndex.as_view(), name="front_index"),
     path('contact/', views.FrontContact.as_view(), name="front_contact"),
+    
     path('products/', views.FrontProducts.as_view(), name="front_products"),
     path('products/product/<int:product_id>/', views.FrontDetailProduct.as_view(), name="front_product_detail"),
+    
+    path('register/', AuthenticationPageRegister.as_view(), name="authentication_register"),
 ]
