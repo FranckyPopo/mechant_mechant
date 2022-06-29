@@ -1,11 +1,9 @@
 from django import forms
-
 from authentication.models import User
-
+#print(help(forms.PasswordInput))
 class FormRegister(forms.ModelForm):
-    password2 = forms.PasswordInput(attrs={"type": "password"})
-    password = forms.PasswordInput(attrs={"type": "password"})
+    password2 = forms.CharField(widget=forms.PasswordInput())
     
     class Meta:
         model = User
-        fields = ["last_name", "first_name", "email", "telephone_number", "password"]
+        fields = ["last_name", "first_name", "email", "telephone_number", "password",]
