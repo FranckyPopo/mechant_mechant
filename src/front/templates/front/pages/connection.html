@@ -1,7 +1,6 @@
 {% extends 'front/base/base_auther.html' %}
 {% load widget_tweaks %}
 {% block 'content' %}
-
     <div class="fs_menu_overlay"></div>
     <div class="hamburger_menu">
         <div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
@@ -45,38 +44,29 @@
 
             <div class="col-lg-6 get_in_touch_col">
                 <div class="get_in_touch_contents">
-                    <h1 style="margin-bottom: 25px;">Register</h1>
+                    <h1 style="margin-bottom: 25px;">Connection</h1>
+                    {% comment %}Affichage des message d'erreur{% endcomment %}
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% if field.errors %}
+                                <div class="alert alert-danger">
+                                    {{ field.errors }}
+                                </div>                            
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
                     <form action="" method="post">
                         {% csrf_token %}
-                        <div>
-                            {% comment %}Affichage des message d'erreur{% endcomment %}
-                            {% if form.errors %}
-                                {% for field in form %}
-                                    {% if field.errors %}
-                                        <div class="alert alert-danger">
-                                            {{ field.errors }}
-                                        </div>                            
-                                    {% endif %}
-                                {% endfor %}
-                            {% endif %}
+                        <div>         
+                            {% render_field form.username class="form_input input_name input_ph" placeholder="Username" required="required" data-error="Username." %}
 
+                            {% render_field form.password class="form_input input_name input_ph" placeholder="Password" required="required" data-error="Password." %}
+                
                             {% comment %}Affichage des champs des formulaire{% endcomment %}
-                            {% render_field form.last_name class="form_input input_name input_ph" placeholder="Last name" required="required" data-error="Last name." %}
-
-                            {% render_field form.first_name class="form_input input_name input_ph" placeholder="First name" required="required" data-error="First name." %}
-
-                            {% render_field form.username class="form_input input_name input_ph" placeholder="User name" required="required" data-error="User name." %}
-                            
-                            {% render_field form.email class="form_input input_email input_ph" placeholder="Email" required="required" data-error="Email." %}
-                            
-                            {% render_field form.telephone_number class="form_input input_name input_ph" placeholder="Telephone number" required="required" data-error="Last name." %}
-
-                            {% render_field form.password1 class="form_input input_name input_ph" placeholder="Password" required="required" data-error="Last name." %}
-                            
-                            {% render_field form.password2 class="form_input input_name input_ph" placeholder="Password confimed" required="required" data-error="Comfimed password." %} 
                         </div>
                         <div>
-                            <button id="review_submit" type="submit" class="red_button message_submit_btn trans_300" value="Submit">Connection</button>
+                            <button id="review_submit" type="submit" class="red_button message_submit_btn trans_300" value="Submit">S'inscrire</button>
                         </div>
                     </form>
                 </div>
