@@ -72,9 +72,14 @@
                                             My Account
                                             <i class="fa fa-angle-down"></i>
                                         </a>
-                                        <ul class="account_selection">
-                                            <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-                                            <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+                                        <ul class="account_selection" style="width: 150px;">
+                                            {% if request.user.is_authenticated %}
+                                                <li><a href=""><i class="fa fa-sign-in" aria-hidden="true"></i>Mon compte</a></li>
+                                                <li><a href="{% url 'authentication_logout' %}"><i class="fa fa-user-plus" aria-hidden="true"></i>Deconnection</a></li>
+                                            {% else %}
+                                                <li><a href="{% url 'authentication_login' %}"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+                                                <li><a href="{% url 'authentication_register' %}"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+                                            {% endif %}
                                         </ul>
                                     </li>
                                 </ul>

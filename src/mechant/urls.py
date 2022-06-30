@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 
 from front import views
-from authentication.views import AuthenticationPageRegister
+from authentication.views import AuthenticationPageRegister, AuthenticationLogin, authentication_logout
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,4 +28,6 @@ urlpatterns = [
     path('products/product/<int:product_id>/', views.FrontDetailProduct.as_view(), name="front_product_detail"),
     
     path('register/', AuthenticationPageRegister.as_view(), name="authentication_register"),
+    path('login/', AuthenticationLogin.as_view(), name="authentication_login"),
+    path('logout/', authentication_logout, name="authentication_logout"),
 ]
