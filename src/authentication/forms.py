@@ -1,9 +1,10 @@
-from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import get_user_model
+
 from authentication.models import User
-#print(help(forms.PasswordInput))
-class FormRegister(forms.ModelForm):
-    password2 = forms.CharField(widget=forms.PasswordInput())
-    
+
+class FormRegister(UserCreationForm):
     class Meta:
-        model = User
-        fields = ["last_name", "first_name", "email", "telephone_number", "password",]
+        model = get_user_model()
+        fields = ["last_name", "first_name", "email", "telephone_number"]
+

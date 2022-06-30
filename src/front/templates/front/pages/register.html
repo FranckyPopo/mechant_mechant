@@ -33,11 +33,10 @@
                         
                         {% render_field form.telephone_number class="form_input input_name input_ph" placeholder="Telephone number" required="required" data-error="Last name." %}
                         
-                        {% render_field form.password class="form_input input_name input_ph" placeholder="Password" required="required" data-error="Last name." %}
+                        {% render_field form.password1 class="form_input input_name input_ph" placeholder="Password" required="required" data-error="Last name." %}
 
-                        {% render_field form.password2 class="form_input input_name input_ph" placeholder="Password confimed" required="required" data-error="Comfimed password." %}
-
-
+                        {% render_field form.password2 class="form_input input_name input_ph" placeholder="Password confimed" required="required" data-error="Comfimed password." %} 
+                        
                     </div>
                     <div>
                         <button id="review_submit" type="submit" class="red_button message_submit_btn trans_300" value="Submit">S'inscrire</button>
