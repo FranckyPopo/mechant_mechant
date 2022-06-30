@@ -6,5 +6,5 @@ from authentication.models import User
 class FormRegister(UserCreationForm):
     class Meta:
         model = get_user_model()
-        fields = ["last_name", "first_name", "email", "telephone_number"]
-
+        fields = ["last_name", "first_name", "email", "username", "telephone_number"]
+        
