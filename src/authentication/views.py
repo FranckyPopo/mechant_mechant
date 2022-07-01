@@ -2,8 +2,11 @@ from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 
-from authentication import forms
+from authentication import forms, models
+
 
 # Create your views here.
 class AuthenticationPageRegister(View):
@@ -41,10 +44,31 @@ class AuthenticationLogin(View):
                 return redirect("front_index")
             
         return render(request, self.template_name, context={"form": self.form})
+
+class authentication_edit_profile(LoginRequiredMixin, View):
+    template_name = "front/pages/settings_account.html"
+    model_form = forms.FormEditProfile
     
+    def get(self, request):
+        user = models.User.objects.get(username=request.user)
+        form = self.model_form(instance=user)
+        
+        return render(request, self.template_name, context={"form": form})
+    
+    def post(self, request):
+        user = models.User.objects.get(username=request.user)
+        form = self.model_form(request.POST, instance=user)
+        print(request.POST, form.is_valid())
+        if form.is_valid():
+            form.save()
+            return redirect("authentication_edit_profile")
+        return render(request, self.template_name, context={"form": form})
+        
+
 @login_required
 def authentication_logout(request):
     logout(request)
     return redirect("authentication_login")
+
     
     
