@@ -34,3 +34,7 @@ class BestSellers(admin.ModelAdmin):
 class SiteContact(admin.ModelAdmin):
     list_display = ["phone_number", "email", "created"]
     
+@admin.register(models.ProductColor)
+class ProductColor(admin.ModelAdmin):
+    list_display = ["product", "color"]
+    
