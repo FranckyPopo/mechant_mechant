@@ -1,17 +1,12 @@
 
-from this import s
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator
 from phonenumber_field.modelfields import PhoneNumberField
-from colorfield.fields import ColorField
-import datetime
 
 class Categories(models.Model):
     name = models.fields.CharField(max_length=150)
     active = models.BooleanField(default=True)
-    cat_image = models.ImageField(upload_to="product_cats")
-    cat_description = models.TextField()
     
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
@@ -21,26 +16,18 @@ class Categories(models.Model):
         return self.name
 
 class Products(models.Model):
-    class Meta:
-        verbose_name = "Product"
-        verbose_name_plural = "Products"
-    
-    
     name = models.CharField(max_length=150)
-    main_image = models.ImageField()
+    photo = models.ImageField()
     description = models.TextField()
-    
-    original_price = models.PositiveIntegerField()
-    is_promotion = models.BooleanField(default=False)
-    promotion_reduction = models.PositiveIntegerField(default=0)
-    promotion_percentage = models.PositiveIntegerField(validators=[MaxValueValidator(100)],default=0)
+    original_price = models.PositiveIntegerField(validators=[MaxValueValidator(100)])
+    promotion_price = models.PositiveIntegerField(validators=[MaxValueValidator(100)])
+    promotion_percentage = models.PositiveIntegerField(validators=[MaxValueValidator(100)])
     additional_information = models.TextField()
-    is_solde = models.BooleanField(default=False)
-    stock = models.PositiveIntegerField()
-    
-    active = models.BooleanField(default=True)
+    promotion = models.BooleanField(default=False)
+    active = models.BooleanField(default=False)
     categories = models.ManyToManyField(Categories, related_name="product_categories")
-
+    
+    color = models.CharField(max_length=50, blank=True)
     size = models.CharField(max_length=50, blank=True)
     longeur = models.CharField(max_length=50, blank=True)
     largeur = models.CharField(max_length=50, blank=True)
@@ -48,57 +35,12 @@ class Products(models.Model):
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
     deleted = models.fields.BooleanField(default=False)
-
-    
-    
-    
-    def is_new(self):
-        now = datetime.datetime.now()
-        dif_date = now - self.created 
-        
-        return dif_date.days < 2
-    
-    def get_product_reduction(self):
-        
-        if self.promotion_percentage :
-            
-            return self.original_price * self.promotion_percentage // 100
-        
-        return self.promotion_reduction
-        
-    
-    def get_final_product_price(self):
-        if self.is_promotion:
-            if self.promotion_percentage :
-                reduction = self.original_price * self.promotion_percentage // 100
-                return self.original_price - reduction
-            
-            elif self.promotion_reduction:
-                return self.original_price - self.promotion_reduction
-            else:
-                return self.original_price
-        else:
-            return self.original_price
-        
     
     def __str__(self) -> str:
         return self.name
 
-
-class ProductColor(models.Model):
-    product = models.ForeignKey(Products,related_name="protruct_color",on_delete=models.CASCADE)
-    color = models.CharField(max_length=50, blank=True)
-    color_code = ColorField(default = "#FF0000")
-    
-    updated = models.fields.DateTimeField(auto_now=True)
-    created = models.fields.DateTimeField(auto_now_add=True)
-    deleted = models.fields.BooleanField(default=False)
-    
-    def __str__(self) -> str:
-        return self.color_code
-    
 class Comments(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_comment")
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="user_comment")
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="comment_product")
     message = models.TextField()
     

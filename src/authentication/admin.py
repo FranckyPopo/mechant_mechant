@@ -1,6 +1,9 @@
 from django.contrib import admin
-from django.contrib.auth.models import User
+
+from authentication.models import User 
 
 # Register your models here.
-
+@admin.register(User)
+class User(admin.ModelAdmin):
+    list_display = ["last_name", "first_name", "username"]
     

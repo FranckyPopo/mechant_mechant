@@ -3,19 +3,19 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
-from django.contrib.auth.models import User
+import re
 
-
+from authentication.models import User
 
 class FormRegister(UserCreationForm):
     class Meta:
-        model = User
-        fields = ["last_name", "first_name", "email", "username", ]
+        model = get_user_model()
+        fields = ["last_name", "first_name", "email", "username", "telephone_number"]
     
 class FormEditProfile(forms.ModelForm):
     class Meta:
         model = User
-        fields = ["last_name", "first_name", "email", "username", ]
+        fields = ["last_name", "first_name", "email", "username", "telephone_number"]
     
     def clean_first_name(self):
         first_name = self.cleaned_data['first_name']
