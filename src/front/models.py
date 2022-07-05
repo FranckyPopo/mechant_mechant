@@ -32,7 +32,6 @@ class Products(models.Model):
     )
     additional_information = models.TextField()
     categories = models.ManyToManyField(Categories, related_name="product_categories")
-    color = models.CharField(max_length=50, blank=True)
     size = models.CharField(max_length=50, blank=True)
     longeur = models.CharField(max_length=50, blank=True)
     largeur = models.CharField(max_length=50, blank=True)
