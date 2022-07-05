@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "authentication",
     "features",
     "widget_tweaks",
+    "colorfield",
 ]
 
 MIDDLEWARE = [
