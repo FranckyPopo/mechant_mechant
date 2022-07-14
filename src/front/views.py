@@ -5,6 +5,13 @@ from django.views.generic import View
 
 from front import models
 from mechant import context_processors
+
+    
+class FrontCartList(View):
+    template_name = "front/pages/cart_list.html"
+    
+    def get(self, request):
+        return render(request, self.template_name)
     
 class FrontProducts(View):
     template_name = "front/pages/categories.html"

@@ -23,6 +23,7 @@ urlpatterns = [
         views.FrontProductAddCart.as_view(),
         name="front_product_add_cart"
     ),
+    path('cart-list/', views.FrontCartList.as_view(), name="front_cart_list"),
     
 
     path('register/', authentication_view.AuthenticationPageRegister.as_view(), name="authentication_register"),
