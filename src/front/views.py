@@ -9,9 +9,13 @@ from mechant import context_processors
     
 class FrontCartList(View):
     template_name = "front/pages/cart_list.html"
+    model = models.OrderItem
     
     def get(self, request):
-        return render(request, self.template_name)
+        orders = self.model.objects.filter(
+            session_id=request.session._get_or_create_session_key()
+        )
+        return render(request, self.template_name, context={"orders": orders})
     
 class FrontProducts(View):
     template_name = "front/pages/categories.html"
@@ -48,8 +52,12 @@ class FrontProductAddCart(View):
         session_id = request.session._get_or_create_session_key()
         product = models.Products.objects.get(pk=product_pk)
         objet, create = models.OrderItem.objects.get_or_create(session_id=session_id, product=product)
+        quantity = request.POST.get("quantity")
         
-        if not create:
+        if quantity:
+            objet.quantity = quantity
+            objet.save()
+        else:
             objet.quantity += 1
             objet.save()
         
