@@ -75,4 +75,11 @@ class FrontProductDeleteCart(View):
     def post(self, request, product_pk):
         self.model.objects.get(pk=product_pk).delete()
         
-        return HttpResponse("")
+        return HttpResponse(
+            "",
+            headers={
+                "HX-Trigger": json.dumps({
+                    "order_add": context_processors.get_total_number_products(request)
+                })
+            }
+        )
