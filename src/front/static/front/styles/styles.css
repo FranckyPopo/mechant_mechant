@@ -1,0 +1,4 @@
+#block_product.htmx-swapping {
+    opacity: 0;
+    transition: opacity 500ms ease-out;
+}
