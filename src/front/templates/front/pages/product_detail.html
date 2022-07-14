@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,15 +7,15 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="description" content="Colo Shop Template">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
-	<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
-	<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
-	<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
-	<link rel="stylesheet" href="plugins/themify-icons/themify-icons.css">
-	<link rel="stylesheet" type="text/css" href="plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
-	<link rel="stylesheet" type="text/css" href="styles/single_styles.css">
-	<link rel="stylesheet" type="text/css" href="styles/single_responsive.css">
+	<link rel="stylesheet" type="text/css" href="{% static 'front/styles/bootstrap4/bootstrap.min.css' %}">
+	<link href="{% static 'front/plugins/font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="{% static 'front/plugins/OwlCarousel2-2.2.1/owl.carousel.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'front/plugins/OwlCarousel2-2.2.1/owl.theme.default.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'front/plugins/OwlCarousel2-2.2.1/animate.css' %}">
+	<link rel="stylesheet" href="{% static 'front/plugins/themify-icons/themify-icons.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'front/plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'front/styles/single_styles.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'front/styles/single_responsive.css' %}">
 </head>
 
 <body>
@@ -179,7 +180,7 @@
 
 				<div class="breadcrumbs d-flex flex-row align-items-center">
 					<ul>
-						<li><a href="index.html">Home</a></li>
+						<li><a href="{% url 'front_index' %}">Home</a></li>
 						<li><a href="categories.html"><i class="fa fa-angle-right" aria-hidden="true"></i>Men's</a></li>
 						<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Single Product</a></li>
 					</ul>
@@ -195,15 +196,17 @@
 						<div class="col-lg-3 thumbnails_col order-lg-1 order-2">
 							<div class="single_product_thumbnails">
 								<ul>
-									<li><img src="images/single_1_thumb.jpg" alt="" data-image="images/single_1.jpg"></li>
-									<li class="active"><img src="images/single_2_thumb.jpg" alt="" data-image="images/single_2.jpg"></li>
-									<li><img src="images/single_3_thumb.jpg" alt="" data-image="images/single_3.jpg"></li>
+									{% for img_products in img_product %}
+										<li><img src="{{ img_products.photo.url }}" alt="" data-image="{% static 'front/images/single_1.jpg' %}"></li>
+										{% comment %} <li class="active"><img src="{% static 'front/images/single_2_thumb.jpg' %}" alt="" data-image="{% static 'front/images/single_2.jpg' %}"></li>
+										<li><img src="{% static 'front/images/single_3_thumb.jpg' %}" alt="" data-image="{% static 'front/images/single_3.jpg' %}"></li> {% endcomment %}
+								{% endfor %}
 								</ul>
 							</div>
 						</div>
 						<div class="col-lg-9 image_col order-lg-2 order-1">
 							<div class="single_product_image">
-								<div class="single_product_image_background" style="background-image:url(images/single_2.jpg)"></div>
+								<div class="single_product_image_background" style="background-image:url({% static 'front/images/single_2.jpg' %})"></div>
 							</div>
 						</div>
 					</div>
@@ -212,8 +215,8 @@
 			<div class="col-lg-5">
 				<div class="product_details">
 					<div class="product_details_title">
-						<h2>Pocket cotton sweatshirt</h2>
-						<p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
+						<h2>{{ product_id.name }}</h2>
+						<p>{{ product_id.description}}</p>
 					</div>
 					<div class="free_delivery d-flex flex-row align-items-center justify-content-center">
 						<span class="ti-truck"></span><span>free delivery</span>
@@ -279,27 +282,29 @@
 									<h4>Description</h4>
 								</div>
 								<div class="tab_text_block">
-									<h2>Pocket cotton sweatshirt</h2>
-									<p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
+									<h2>{{ product_id.name }}</h2>
+									<p>{{ product_id.description }}</p>
 								</div>
 								<div class="tab_image">
-									<img src="images/desc_1.jpg" alt="">
+									{% if img_product.photo_desc_1.url != None %}
+									<img src="{{ img_product.photo_desc_1.url }}" alt="">
+									{% endif %}
 								</div>
 								<div class="tab_text_block">
-									<h2>Pocket cotton sweatshirt</h2>
-									<p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
+									<h2>{{ product_id.name }}</h2>
+									<p>{{ product_id.description }}</p>
 								</div>
 							</div>
 							<div class="col-lg-5 offset-lg-2 desc_col">
 								<div class="tab_image">
-									<img src="images/desc_2.jpg" alt="">
+									<img src="{{ img_product.photo_desc_2.url }}" alt="">
 								</div>
 								<div class="tab_text_block">
-									<h2>Pocket cotton sweatshirt</h2>
-									<p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
+									<h2>{{ product_id.name }}</h2>
+									<p>{{ product_id.description }}</p>
 								</div>
 								<div class="tab_image desc_last">
-									<img src="images/desc_3.jpg" alt="">
+									<img src="{{ img_product.photo_desc_1.url }}" alt="">
 								</div>
 							</div>
 						</div>
@@ -381,7 +386,8 @@
 							<div class="col-lg-6 add_review_col">
 
 								<div class="add_review">
-									<form id="review_form" action="post">
+									<form id="review_form" action="POST">
+										{% csrf_token %}
 										<div>
 											<h1>Add Review</h1>
 											<input id="review_name" class="form_input input_name" type="text" name="name" placeholder="Name*" required="required" data-error="Name is required.">
@@ -521,14 +527,14 @@
 
 </div>
 
-<script src="js/jquery-3.2.1.min.js"></script>
-<script src="styles/bootstrap4/popper.js"></script>
-<script src="styles/bootstrap4/bootstrap.min.js"></script>
-<script src="plugins/Isotope/isotope.pkgd.min.js"></script>
-<script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
-<script src="plugins/easing/easing.js"></script>
-<script src="plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
-<script src="js/single_custom.js"></script>
+<script src="{% static 'front/js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'front/styles/bootstrap4/popper.js' %}"></script>
+<script src="{% static 'front/styles/bootstrap4/bootstrap.min.js' %}"></script>
+<script src="{% static 'front/plugins/Isotope/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'front/plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+<script src="{% static 'front/plugins/easing/easing.js' %}"></script>
+<script src="{% static 'front/plugins/jquery-ui-1.12.1.custom/jquery-ui.js' %}"></script>
+<script src="{% static 'front/js/single_custom.js' %}"></script>
 </body>
 
 </html>

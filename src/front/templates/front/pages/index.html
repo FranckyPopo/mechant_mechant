@@ -52,7 +52,7 @@
 					<div class="col-md-4">
 						<div class="banner_item align-items-center" style="background-image:url({{cat.cat_image.url}})">
 							<div class="banner_category">
-								<a href="categories.html">{{cat.name}}</a>
+								<a href="{% url 'single_cat' cat.id %}">{{cat.name}}</a>
 							</div>
 						</div>
 					</div>
@@ -102,13 +102,13 @@
 										<div class="favorite favorite_left"></div>
 										{% if product.is_promotion %}
 
-										<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-{{ product.get_product_reduction }}XOF</span></div>
+										<div  style="width:60px;" class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-{{ product.get_product_reduction }}XOF</span></div>
 
 										{% endif %}
 										
 										<div class="product_info">
 											<h6 class="product_name">
-												<a href="single.html">
+												<a href="{% url 'front_product_detail' product.id %}">
 												{{ product.name }}
 												</a>
 											</h6>
@@ -123,7 +123,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>
+									<div class="red_button add_to_cart_button"><a href="{% url '' %}">add to cart</a></div>
 								</div>
 							{% endfor %}
 

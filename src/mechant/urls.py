@@ -12,8 +12,10 @@ urlpatterns = [
     path('', views.FrontIndex.as_view(), name="front_index"),
     path('contact/', views.FrontContact.as_view(), name="front_contact"),
     
+    
     path('products/', views.FrontProducts.as_view(), name="front_products"),
     path('products/product-detail/<int:product_id>/', views.FrontDetailProduct.as_view(), name="front_product_detail"),
+    path('products/categories/single_category/<int:cat_id>/', views.FrontSingleCategory.as_view(), name="single_cat"),
 
     path('register/', authentication_view.AuthenticationPageRegister.as_view(), name="authentication_register"),
     path('login/', authentication_view.AuthenticationLogin.as_view(), name="authentication_login"),

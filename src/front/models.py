@@ -84,6 +84,29 @@ class Products(models.Model):
     def __str__(self) -> str:
         return self.name
 
+class Cart(models.Model):
+    Product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="Card_products")
+    Quantity = models.PositiveIntegerField()
+    #Session_id = 
+
+    updated = models.fields.DateTimeField(auto_now=True)
+    created = models.fields.DateTimeField(auto_now_add=True)
+    deleted = models.fields.BooleanField(default=False)
+    
+    def __str__(self) -> str:
+        return self.Product
+
+
+class Order(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="oder_cart")
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="order_user")
+    
+    updated = models.fields.DateTimeField(auto_now=True)
+    created = models.fields.DateTimeField(auto_now_add=True)
+    deleted = models.fields.BooleanField(default=False)
+    
+    def __str__(self) -> str:
+        return self.customer
 
 class ProductColor(models.Model):
     product = models.ForeignKey(Products,related_name="protruct_color",on_delete=models.CASCADE)
@@ -111,8 +134,11 @@ class Comments(models.Model):
     
 class ImageProduct(models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="image_product_product")
-    photo = models.ImageField()
-    
+    photo = models.ImageField(upload_to="img_product")
+    photo_desc_1 = models.ImageField(upload_to="img_product_desc1", blank=True)
+    photo_desc_2 = models.ImageField(upload_to="img_product_desc2", blank=True)
+    photo_desc_3 = models.ImageField(upload_to="img_product_desc2", blank=True)
+
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
     deleted = models.fields.BooleanField(default=False)
