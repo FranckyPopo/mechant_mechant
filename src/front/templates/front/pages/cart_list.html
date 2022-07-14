@@ -19,7 +19,7 @@
             <div class="card rounded-3 mb-4">
                 <div class="card-body p-4">
                 <div class="row d-flex justify-content-between align-items-center">
-                    <div class="col-md-2 col-lg-2 col-xl-2">
+                    <div class="col-md-2 col-lg-2 col-xl-2" style="cursor: pointer;">
                     <img
                         src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
                         class="img-fluid rounded-3" alt="Cotton T-shirt">
@@ -30,7 +30,8 @@
                     </div>
                     <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                     <button class="btn btn-link px-2"
-                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+                        style="cursor: pointer;">
                         <i class="fas fa-minus"></i>
                     </button>
     
@@ -38,7 +39,8 @@
                         class="form-control form-control-sm text-secondary" />
     
                     <button class="btn btn-link px-2"
-                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                        style="cursor: pointer;">
                         <i class="fas fa-plus"></i>
                     </button>
                     </div>
@@ -54,7 +56,11 @@
     
             <div class="card">
                 <div class="card-body">
-                <button type="button" class="btn btn-danger fw-bold btn-block btn-lg text-light">Proceed to Pay</button>
+                <button type="button" 
+                    class="btn btn-danger fw-bold btn-block btn-lg text-light"
+                    style="cursor: pointer;">
+                    Proceed to Pay
+                </button>
                 </div>
             </div>
     
