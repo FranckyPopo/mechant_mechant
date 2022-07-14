@@ -30,7 +30,11 @@ class DealOfTheWeenk(admin.ModelAdmin):
 class BestSellers(admin.ModelAdmin):
     list_display = ["product", "active", "created"]
     
-@admin.register(models.SiteContact)
+@admin.register(models.SiteContact) 
 class SiteContact(admin.ModelAdmin):
     list_display = ["phone_number", "email", "created"]
+    
+@admin.register(models.OrderItem)
+class OrderItem(admin.ModelAdmin):
+    list_display = ["session_id", "product", "quantity", "created"]
     

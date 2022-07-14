@@ -108,13 +108,12 @@
 										</div>
 									</div>
 									<form method="post">
-										<div class="red_button add_to_cart_button">
-											{% csrf_token %}
-											<a hx-post="{% url 'authentication_cart' %}"
-											   hx-swap="none"
-											   hx-triger="click">
-												add to cart
-											</a>
+										{% csrf_token %}
+										<div class="red_button add_to_cart_button"
+											hx-post="{% url 'front_product_add_cart' product.pk %}"
+											hx-swap="none"
+											hx-triger="click">
+											<a>add to cart</a>
 										</div>
 									</form>
 								</div>

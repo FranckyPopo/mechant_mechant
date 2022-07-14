@@ -12,15 +12,30 @@ urlpatterns = [
     path('contact/', views.FrontContact.as_view(), name="front_contact"),
     
     path('products/', views.FrontProducts.as_view(), name="front_products"),
-    path('products/product-detail/<int:product_id>/', views.FrontDetailProduct.as_view(), name="front_product_detail"),
+    path(
+        'products/product-detail/<int:product_id>/',
+        views.FrontDetailProduct.as_view(), 
+        name="front_product_detail"
+    ),
+    
+    path(
+        'product-add-cart/<int:product_pk>/',
+        views.FrontProductAddCart.as_view(),
+        name="front_product_add_cart"
+    ),
+    
 
     path('register/', authentication_view.AuthenticationPageRegister.as_view(), name="authentication_register"),
     path('login/', authentication_view.AuthenticationLogin.as_view(), name="authentication_login"),
     path('logout/', authentication_view.authentication_logout, name="authentication_logout"),
     
-    path('user/accounts/edit-profile', authentication_view.authentication_edit_profile.as_view(), name="authentication_edit_profile"),
+    path(
+        'user/accounts/edit-profile',
+        authentication_view.authentication_edit_profile.as_view(),
+        name="authentication_edit_profile"
+    ),
     
-    path('cart/', authentication_view.AuthenticationCart.as_view(), name="authentication_cart"),
+
     
 ]
 

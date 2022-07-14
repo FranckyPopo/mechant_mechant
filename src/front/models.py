@@ -47,6 +47,26 @@ class Products(models.Model):
     
     def __str__(self) -> str:
         return self.name
+    
+class OrderItem(models.Model):
+    session_id = models.CharField(max_length=150)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    
+    updated = models.fields.DateTimeField(auto_now=True)
+    created = models.fields.DateTimeField(auto_now_add=True)
+    deleted = models.fields.BooleanField(default=False)
+    
+    def __str__(self) -> str:
+        return str(self.product)
+    
+class Cart(models.Model):
+    session = None
+    product = None
+    
+    updated = models.fields.DateTimeField(auto_now=True)
+    created = models.fields.DateTimeField(auto_now_add=True)
+    deleted = models.fields.BooleanField(default=False)
 
 class ProductColor(models.Model):
     name = models.CharField(max_length=50, blank=True)

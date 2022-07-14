@@ -1,3 +1,5 @@
+from urllib.request import Request
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
 
@@ -31,4 +33,17 @@ class FrontDetailProduct(View):
     def get(self, request):
         return render(request, self.template_name)
     
-
+class FrontProductAddCart(View):
+    template_name = None
+    
+    def post(self, request, product_pk):
+        session_id = request.session._get_or_create_session_key()
+        product = models.Products.objects.get(pk=product_pk)
+        objet, create = models.OrderItem.objects.get_or_create(session_id=session_id, product=product)
+        
+        if not create:
+            objet.quantity += 1
+            objet.save()
+        
+        return HttpResponse("")
+        
