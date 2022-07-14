@@ -1,9 +1,10 @@
-from urllib.request import Request
+import json
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
 
 from front import models
+from mechant import context_processors
     
 class FrontProducts(View):
     template_name = "front/pages/categories.html"
@@ -45,5 +46,12 @@ class FrontProductAddCart(View):
             objet.quantity += 1
             objet.save()
         
-        return HttpResponse("")
+        return HttpResponse(
+            "",
+            headers={
+                "HX-Trigger": json.dumps({
+                    "order_add": context_processors.get_total_number_products(request)
+                })
+            }
+        )
         
