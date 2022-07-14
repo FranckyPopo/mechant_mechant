@@ -8,10 +8,3 @@ class User(AbstractUser):
     def __str__(self) -> str:
         return self.username
     
-class Cart(models.Model):
-    session = None
-    product = None
-    
-    updated = models.fields.DateTimeField(auto_now=True)
-    created = models.fields.DateTimeField(auto_now_add=True)
-    deleted = models.fields.BooleanField(default=False)

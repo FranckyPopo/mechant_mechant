@@ -46,7 +46,6 @@ class FrontDetailProduct(View):
         return render(request, self.template_name)
     
 class FrontProductAddCart(View):
-    template_name = None
     
     def post(self, request, product_pk):
         session_id = request.session._get_or_create_session_key()
@@ -69,4 +68,11 @@ class FrontProductAddCart(View):
                 })
             }
         )
+    
+class FrontProductDeleteCart(View):
+    model = models.OrderItem
+    
+    def post(self, request, product_pk):
+        self.model.objects.get(pk=product_pk).delete()
         
+        return HttpResponse("")

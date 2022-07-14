@@ -18,10 +18,16 @@ urlpatterns = [
         name="front_product_detail"
     ),
     
+    # Path cart 
     path(
         'product-add-cart/<int:product_pk>/',
         views.FrontProductAddCart.as_view(),
         name="front_product_add_cart"
+    ),
+    path(
+        'product-delete-cart/<int:product_pk>/',
+        views.FrontProductDeleteCart.as_view(),
+        name="front_product_delete_cart"
     ),
     path('cart-list/', views.FrontCartList.as_view(), name="front_cart_list"),
     
