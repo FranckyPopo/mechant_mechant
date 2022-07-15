@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 
 from front import views
 import authentication.views as authentication_view
+import features.views as features_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,6 +25,7 @@ urlpatterns = [
         name="front_product_add_cart"
     ),
     path('cart-list/', views.FrontCartList.as_view(), name="front_cart_list"),
+    path('newslater-add/', features_view.AuhthenticationNewsLaterAdd.as_view(), name="auhthentication_newsLater_add"),
     
 
     path('register/', authentication_view.AuthenticationPageRegister.as_view(), name="authentication_register"),
