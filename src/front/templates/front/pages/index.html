@@ -98,21 +98,33 @@
 										</div>
 										<div class="favorite favorite_left"></div>
 
-										<!-- Label New-->
+										{% comment %} Label new {% endcomment %}
 										{% if product.is_new %}
 											<div class="product_bubble product_bubble_left product_bubble_green d-flex flex-column align-items-center">
 												<span>new</span>
 											</div>
 										{% endif %}
+
+										{% comment %} Label reduction {% endcomment %}
+										{% if product.is_promotion %}
 											<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
-												<span>-$20</span>
+												<span>-{{ product.get_product_reduction }}XOF</span>
 											</div>
-										<div class="product_info">
-											<h6 class="product_name">
-												<a href="single.html">{{ product.name }}</a>
-											</h6>
-											<div class="product_price">$520.00<span>$590.00</span></div>
-										</div>
+										{% endif %}
+											<div class="product_info">
+												<h6 class="product_name">
+													<a href="single.html">{{ product.name }}</a>
+												</h6>
+												<div class="product_price">
+													{% comment %} Le prix est affiché en fonction de si il y'a une promotion ou pas {% endcomment %}
+													{% if product.is_promotion %}
+														{{ product.get_final_product_price }} XOF
+														<span>{{ product.original_price }} XOF</span>
+													{% else %}
+														{{ product.original_price }} XOF
+													{% endif %}
+												</div>
+											</div>
 									</div>
 									<form method="post">
 										{% csrf_token %}
