@@ -2,8 +2,10 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
 from colorfield.fields import ColorField
+
 
 class Categories(models.Model):
     name = models.fields.CharField(max_length=150)
@@ -47,6 +49,10 @@ class Products(models.Model):
     
     def __str__(self) -> str:
         return self.name
+    
+    def is_new(self):
+        result = timezone.now() - self.created
+        return result.days < 7
     
 class OrderItem(models.Model):
     session_id = models.CharField(max_length=150)
