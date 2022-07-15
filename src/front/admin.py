@@ -37,4 +37,13 @@ class SiteContact(admin.ModelAdmin):
 @admin.register(models.ProductColor)
 class ProductColor(admin.ModelAdmin):
     list_display = ["product", "color"]
+
+    
+@admin.register(models.Cart)
+class CartProduct(admin.ModelAdmin):
+    list_display = ["Product", "Quantity","is_cart"]
+
+@admin.register(models.Order)
+class OrderProduct(admin.ModelAdmin):
+    list_display = ["cart", "customer"]
     

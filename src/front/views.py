@@ -14,6 +14,7 @@ class FrontContact(View):
     template_name = "front/pages/contact.html"
     
     def get(self, request):
+        
         return render(request, self.template_name)
     
 class FrontIndex(View):
@@ -42,10 +43,10 @@ class FrontDetailProduct(View):
     template_name = "front/pages/product_detail.html"
     
     def get(self, request, product_id):
-        product_id = models.Products.objects.get(id=product_id)
+        product_id = models.Products.objects.get(id=product_id) 
         img_product = models.ImageProduct.objects.all()
         return render(request, self.template_name, locals())
-
+    
 
 class FrontSingleCategory(View):
     template_name = "front/pages/categories.html"
@@ -55,3 +56,5 @@ class FrontSingleCategory(View):
         return render(request, self.template_name, locals())
 
 
+def add_to_card(requrest):
+    pass

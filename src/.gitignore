@@ -2,3 +2,4 @@
 **/venv/
 src/.gitignore
 .vscode/ 
+src/db.sqlite3

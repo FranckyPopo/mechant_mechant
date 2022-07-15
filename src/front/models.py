@@ -1,12 +1,13 @@
 
 from this import s
 from django.db import models
+from django.urls import reverse
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator
 from phonenumber_field.modelfields import PhoneNumberField
 from colorfield.fields import ColorField
 import datetime
-
+from front import views
 class Categories(models.Model):
     name = models.fields.CharField(max_length=150)
     active = models.BooleanField(default=True)
@@ -17,7 +18,7 @@ class Categories(models.Model):
     created = models.fields.DateTimeField(auto_now_add=True)
     deleted = models.fields.BooleanField(default=False)
     
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
 
 class Products(models.Model):
@@ -81,32 +82,40 @@ class Products(models.Model):
             return self.original_price
         
     
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
+        
+    # applique une vue  du produit depuisla admin
+    def get_absolute_url(self):
+        pass
+        #return reverse() 
 
 class Cart(models.Model):
     Product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="Card_products")
-    Quantity = models.PositiveIntegerField()
+    Quantity = models.PositiveIntegerField(default=1)
+    is_cart = models.BooleanField(default=False)
     #Session_id = 
 
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
     deleted = models.fields.BooleanField(default=False)
     
-    def __str__(self) -> str:
-        return self.Product
+    def __str__(self):
+        return self.Product.name
 
 
 class Order(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="oder_cart")
     customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="order_user")
-    
+    is_ordered = models.BooleanField(default=False)
+
+
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
     deleted = models.fields.BooleanField(default=False)
     
-    def __str__(self) -> str:
-        return self.customer
+    def __str__(self):
+        return self.customer.username
 
 class ProductColor(models.Model):
     product = models.ForeignKey(Products,related_name="protruct_color",on_delete=models.CASCADE)
@@ -117,7 +126,7 @@ class ProductColor(models.Model):
     created = models.fields.DateTimeField(auto_now_add=True)
     deleted = models.fields.BooleanField(default=False)
     
-    def __str__(self) -> str:
+    def __str__(self):
         return self.color_code
     
 class Comments(models.Model):
@@ -129,7 +138,7 @@ class Comments(models.Model):
     created = models.fields.DateTimeField(auto_now_add=True)
     deleted = models.fields.BooleanField(default=False)
     
-    def __str__(self) -> str:
+    def __str__(self):
         return self.user.username
     
 class ImageProduct(models.Model):
@@ -143,7 +152,7 @@ class ImageProduct(models.Model):
     created = models.fields.DateTimeField(auto_now_add=True)
     deleted = models.fields.BooleanField(default=False)
     
-    def __str__(self) -> str:
+    def __str__(self):
         return str(self.product.name)
 
 class Promotion(models.Model):
@@ -154,7 +163,7 @@ class Promotion(models.Model):
     created = models.fields.DateTimeField(auto_now_add=True)
     deleted = models.fields.BooleanField(default=False)
     
-    def __str__(self) -> str:
+    def __str__(self):
         return self.title    
     
 class DealOfTheWeenk(models.Model):
@@ -165,7 +174,7 @@ class DealOfTheWeenk(models.Model):
     created = models.fields.DateTimeField(auto_now_add=True)
     deleted = models.fields.BooleanField(default=False)
     
-    def __str__(self) -> str:
+    def __str__(self):
         return self.product
 
 class BestSellers(models.Model):
