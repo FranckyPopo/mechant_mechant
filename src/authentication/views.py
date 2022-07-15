@@ -1,3 +1,5 @@
+from email import header
+import json
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.contrib.auth import login, logout, authenticate
@@ -64,7 +66,18 @@ class authentication_edit_profile(LoginRequiredMixin, View):
             return redirect("authentication_edit_profile")
         return render(request, self.template_name, context={"form": form})
         
-
+class AuthenticationCart(View):
+    def post(self, request):
+                
+        return HttpResponse(
+            "", 
+            headers={
+                "HX-Trigger": json.dumps({
+                    "Bon": ["hello word"]
+                })
+            }
+        )
+    
 @login_required
 def authentication_logout(request):
     logout(request)
