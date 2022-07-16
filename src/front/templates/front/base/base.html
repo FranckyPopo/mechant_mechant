@@ -29,7 +29,7 @@
 </head>
 
 <body>
-
+    
     <div class="super_container">
 
         <!-- Header -->
@@ -96,7 +96,7 @@
             </div>
 
             <!-- Main Navigation -->
-
+            
             <div class="main_nav_container">
                 <div class="container">
                     <div class="row">
@@ -129,10 +129,25 @@
                 </div>
             </div>
 
+            {% if messages %}
+
+            {% for message in messages %}
+            <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+                <strong>{{message.tags}}</strong> {{message}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            {% endfor %}
+            {% endif %}
+            
+              
+
         </header>
         <div class="fs_menu_overlay"></div>
 
-        {% block 'content' %}{% endblock 'content' %}
+        {% block 'content' %}
+        {% endblock 'content' %}
 
         <!-- Footer -->
         <footer class="footer">
@@ -179,6 +194,8 @@
 <script src="{% static 'front/plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
 <script src="{% static 'front/plugins/easing/easing.js' %}"></script>
 <script src="{% static 'front/js/custom.js' %}"></script>
+<!--SwuitAlert-->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </body>
 

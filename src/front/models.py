@@ -5,6 +5,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
 from colorfield.fields import ColorField
+from authentication.models import User
 
 
 class Categories(models.Model):
@@ -96,13 +97,38 @@ class OrderItem(models.Model):
     def __str__(self) -> str:
         return str(self.product)
     
+
+    
 class Cart(models.Model):
-    session = None
-    product = None
+    session_id = models.CharField(max_length=255)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE,related_name="cart_product")
+    quantity = models.PositiveIntegerField(default=1)
+    
     
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
     deleted = models.fields.BooleanField(default=False)
+    
+    
+    
+class Order(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE,related_name="order_cart")
+    user = models.ForeignKey(User, on_delete=models.CASCADE,related_name="order_user")
+    
+    
+    updated = models.fields.DateTimeField(auto_now=True)
+    created = models.fields.DateTimeField(auto_now_add=True)
+    deleted = models.fields.BooleanField(default=False)
+    
+    def calculate_order_price(self):
+        final_price = 0
+        carts = Cart.objects.filter(session_id = self.cart.session_id)
+        
+        for cart in carts:
+            final_price += cart.product.get_final_product_price * cart.quantity 
+        
+        return final_price
+            
 
 class ProductColor(models.Model):
     name = models.CharField(max_length=50, blank=True)

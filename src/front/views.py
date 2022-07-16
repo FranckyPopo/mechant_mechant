@@ -2,6 +2,7 @@ import json
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
+from django.contrib import messages
 
 from front import models
 from mechant import context_processors
@@ -37,6 +38,8 @@ class FrontIndex(View):
             "categories": models.Categories.objects.all().filter(active=True),
             "products": models.Products.objects.all().filter(active=True),
         }
+        
+        messages.add_message(request,messages.SUCCESS,"Bojour le monde")
         return render(request, self.template_name, context=data)
     
 class FrontDetailProduct(View):
