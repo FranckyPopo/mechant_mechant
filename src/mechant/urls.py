@@ -15,7 +15,7 @@ urlpatterns = [
     
     path('products/', views.FrontProducts.as_view(), name="front_products"),
     path('products/product-detail/<int:product_id>/', views.FrontDetailProduct.as_view(), name="front_product_detail"),
-    path('products/product-detail/<int:product_id>/add-to-card', views.FrontDetailProduct.as_view(),  name="add_to_card'"),
+    path('products/product-detail/<int:product_id>/<str:product_name>/', views.FrontDetailProduct.as_view(),  name="add_to_card'"),
     path('products/categories/single_category/<int:cat_id>/', views.FrontSingleCategory.as_view(), name="single_cat"),
 
     path('register/', authentication_view.AuthenticationPageRegister.as_view(), name="authentication_register"),

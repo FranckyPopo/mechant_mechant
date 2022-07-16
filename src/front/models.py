@@ -89,12 +89,11 @@ class Products(models.Model):
     def get_absolute_url(self):
         pass
         #return reverse() 
-
-class Cart(models.Model):
+class Order(models.Model):
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="order_user")
     Product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="Card_products")
     Quantity = models.PositiveIntegerField(default=1)
-    is_cart = models.BooleanField(default=False)
-    #Session_id = 
+    is_ordered = models.BooleanField(default=False)
 
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
@@ -103,12 +102,11 @@ class Cart(models.Model):
     def __str__(self):
         return self.Product.name
 
-
-class Order(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="oder_cart")
-    customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="order_user")
-    is_ordered = models.BooleanField(default=False)
-
+class Cart(models.Model):
+    #Session_id = 
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="cart_order")
+    order= models.ForeignKey(Order, on_delete=models.CASCADE, related_name="oder_cart")
+    is_order = models.BooleanField(default=False)
 
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
@@ -116,6 +114,10 @@ class Order(models.Model):
     
     def __str__(self):
         return self.customer.username
+
+
+
+   
 
 class ProductColor(models.Model):
     product = models.ForeignKey(Products,related_name="protruct_color",on_delete=models.CASCADE)

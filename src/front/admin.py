@@ -41,9 +41,9 @@ class ProductColor(admin.ModelAdmin):
     
 @admin.register(models.Cart)
 class CartProduct(admin.ModelAdmin):
-    list_display = ["Product", "Quantity","is_cart"]
+    list_display = ["order", "is_order"]
 
 @admin.register(models.Order)
 class OrderProduct(admin.ModelAdmin):
-    list_display = ["cart", "customer"]
+    list_display = ["Product", "Quantity","is_ordered"]
     
