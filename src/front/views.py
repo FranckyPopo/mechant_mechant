@@ -50,6 +50,7 @@ class FrontProductAddCart(View):
     def post(self, request, product_pk):
         session_id = request.session._get_or_create_session_key()
         product = models.Products.objects.get(pk=product_pk)
+        
         objet, create = models.OrderItem.objects.get_or_create(session_id=session_id, product=product)
         quantity = request.POST.get("quantity")
         

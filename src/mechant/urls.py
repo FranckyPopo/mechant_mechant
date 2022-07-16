@@ -19,7 +19,7 @@ urlpatterns = [
         name="front_product_detail"
     ),
     
-    # Path cart 
+    # Path cart
     path(
         'product-add-cart/<int:product_pk>/',
         views.FrontProductAddCart.as_view(),
@@ -43,9 +43,6 @@ urlpatterns = [
         authentication_view.authentication_edit_profile.as_view(),
         name="authentication_edit_profile"
     ),
-    
-
-    
 ]
 
 if settings.DEBUG:

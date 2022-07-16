@@ -129,6 +129,7 @@
 									<form method="post">
 										{% csrf_token %}
 										<div class="red_button add_to_cart_button"
+										
 											hx-post="{% url 'front_product_add_cart' product.pk %}"
 											hx-swap="none"
 											hx-triger="click">
