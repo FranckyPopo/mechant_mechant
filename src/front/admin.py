@@ -17,7 +17,7 @@ class Product(admin.ModelAdmin):
 @admin.register(models.ImageProduct)
 class ImageProduct(admin.ModelAdmin):
     list_display = ["product", "photo", "created"]
-    
+
 @admin.register(models.Promotion)
 class Promotion(admin.ModelAdmin):
     list_display = ["product", "active", "created"]
