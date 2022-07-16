@@ -1,0 +1,5 @@
+**/__pycache__/
+env/
+media/
+db.sqlite3
+**/DS_Store
