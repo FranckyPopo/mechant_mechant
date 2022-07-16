@@ -20,6 +20,14 @@ class Categories(models.Model):
     def __str__(self) -> str:
         return self.name
 
+class Size(models.Model):
+    name = models.CharField(max_length=150)
+    
+    updated = models.fields.DateTimeField(auto_now=True)
+    created = models.fields.DateTimeField(auto_now_add=True)
+    deleted = models.fields.BooleanField(default=False)
+    
+
 class Products(models.Model):
     name = models.CharField(max_length=150)
     description = models.TextField()
@@ -39,7 +47,7 @@ class Products(models.Model):
     )
     additional_information = models.TextField()
     categories = models.ManyToManyField(Categories, related_name="product_categories")
-    size = models.CharField(max_length=50, blank=True)
+    size = models.ManyToManyField(Size, related_name="product_size")
     longeur = models.CharField(max_length=50, blank=True)
     largeur = models.CharField(max_length=50, blank=True)
     stock = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1)])
@@ -79,7 +87,7 @@ class Products(models.Model):
                 return self.original_price - reduction
             elif self.promotion_reduction:
                 return self.original_price - self.promotion_reduction
-    
+
     
 class OrderItem(models.Model):
     session_id = models.CharField(max_length=150)
