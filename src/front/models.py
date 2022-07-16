@@ -2,8 +2,10 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
 from colorfield.fields import ColorField
+
 
 class Categories(models.Model):
     name = models.fields.CharField(max_length=150)
@@ -24,11 +26,16 @@ class Products(models.Model):
     photo = models.ImageField()
     
     original_price = models.PositiveIntegerField()
-    promotion_price = models.PositiveIntegerField()
+    promotion_reduction = models.PositiveIntegerField(
+        validators=[MinValueValidator(0)],
+        blank=True,
+        null=True
+    )
     promotion_percentage = models.PositiveIntegerField(
         validators=[MaxValueValidator(100), 
         MinValueValidator(1)], 
-        default=1
+        blank=True,
+        null=True
     )
     additional_information = models.TextField()
     categories = models.ManyToManyField(Categories, related_name="product_categories")
@@ -39,7 +46,7 @@ class Products(models.Model):
     
     is_promotion = models.BooleanField(default=False)
     is_sold = models.BooleanField(default=False)
-    active = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
     
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
@@ -47,6 +54,32 @@ class Products(models.Model):
     
     def __str__(self) -> str:
         return self.name
+    
+    def is_new(self) -> bool:
+        result = timezone.now() - self.created
+        return result.days <= 7
+    
+    def get_product_reduction(self) -> int:
+        if self.promotion_percentage:
+            return self.original_price * self.promotion_percentage // 100
+        return self.promotion_reduction
+            
+    def get_final_product_price(self) -> int:
+        """
+        _summary_
+
+        _extended_summary_
+
+        Returns:
+            int: _description_
+        """
+        if self.is_promotion:
+            if self.promotion_percentage:
+                reduction = self.original_price * self.promotion_percentage // 100
+                return self.original_price - reduction
+            elif self.promotion_reduction:
+                return self.original_price - self.promotion_reduction
+    
     
 class OrderItem(models.Model):
     session_id = models.CharField(max_length=150)

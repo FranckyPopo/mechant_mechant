@@ -1,7 +1,7 @@
 from django.db import models
 
 class NewsLater(models.Model):
-    email = models.EmailField(unique=True)
+    email = models.EmailField()
     
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
