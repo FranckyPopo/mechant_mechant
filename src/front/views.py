@@ -12,10 +12,10 @@ class FrontCartList(View):
     model = models.Cart
     
     def get(self, request):
-        orders = self.model.objects.filter(
+        carts = self.model.objects.filter(
             session_id=request.session._get_or_create_session_key()
         )
-        return render(request, self.template_name, context={"orders": orders})
+        return render(request, self.template_name, context={"carts": carts})
     
 class FrontProducts(View):
     template_name = "front/pages/categories.html"
