@@ -44,7 +44,8 @@ class FrontDetailProduct(View):
     
     def get(self, request):
         return render(request, self.template_name)
-    
+
+# Views cart
 class FrontProductAddCart(View):
     
     def post(self, request, product_pk):
@@ -65,7 +66,7 @@ class FrontProductAddCart(View):
             "",
             headers={
                 "HX-Trigger": json.dumps({
-                    "order_add": context_processors.get_total_number_products(request)
+                    "product_add_cart": context_processors.get_total_number_products(request)
                 })
             }
         )
@@ -80,7 +81,7 @@ class FrontProductDeleteCart(View):
             "",
             headers={
                 "HX-Trigger": json.dumps({
-                    "order_add": context_processors.get_total_number_products(request)
+                    "product_delete_cart": context_processors.get_total_number_products(request)
                 })
             }
         )
