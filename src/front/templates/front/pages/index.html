@@ -91,7 +91,7 @@
 
 							{% comment %} Affichage des produits {% endcomment %}
 							{% for product in products %}
-								<div class="product-item {{ product.categories.first }}">
+								<div class="product-item {% for categorie in product.categories.all %} {{ categorie }} {% endfor %}">
 									<div class="product discount product_filter">
 										<div class="product_image">
 											<img src="{{ product.photo.url }}" alt="">
