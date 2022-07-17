@@ -9,7 +9,7 @@ from mechant import context_processors
     
 class FrontCartList(View):
     template_name = "front/pages/cart_list.html"
-    model = models.OrderItem
+    model = models.Cart
     
     def get(self, request):
         orders = self.model.objects.filter(
@@ -52,7 +52,7 @@ class FrontProductAddCart(View):
         session_id = request.session._get_or_create_session_key()
         product = models.Products.objects.get(pk=product_pk)
         
-        objet, create = models.OrderItem.objects.get_or_create(session_id=session_id, product=product)
+        objet, create = models.Cart.objects.get_or_create(session_id=session_id, product=product)
         quantity = request.POST.get("quantity")
         
         if quantity:
@@ -72,7 +72,7 @@ class FrontProductAddCart(View):
         )
     
 class FrontProductDeleteCart(View):
-    model = models.OrderItem
+    model = models.Cart
     
     def post(self, request, product_pk):
         self.model.objects.get(pk=product_pk).delete()

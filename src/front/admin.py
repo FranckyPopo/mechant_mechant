@@ -34,7 +34,7 @@ class BestSellers(admin.ModelAdmin):
 class SiteContact(admin.ModelAdmin):
     list_display = ["phone_number", "email", "created"]
     
-@admin.register(models.OrderItem)
-class OrderItem(admin.ModelAdmin):
+@admin.register(models.Cart)
+class Cart(admin.ModelAdmin):
     list_display = ["session_id", "product", "quantity", "created"]
     

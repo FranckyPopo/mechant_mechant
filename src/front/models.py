@@ -79,7 +79,7 @@ class Products(models.Model):
             elif self.promotion_reduction:
                 return self.original_price - self.promotion_reduction
 
-class OrderItem(models.Model):
+class Cart(models.Model):
     session_id = models.CharField(max_length=150)
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0, validators=[MinValueValidator(1)])
@@ -90,14 +90,6 @@ class OrderItem(models.Model):
     
     def __str__(self) -> str:
         return str(self.product)
-    
-class Cart(models.Model):
-    session = None
-    product = None
-    
-    updated = models.fields.DateTimeField(auto_now=True)
-    created = models.fields.DateTimeField(auto_now_add=True)
-    deleted = models.fields.BooleanField(default=False)
 
 class ProductColor(models.Model):
     name = models.CharField(max_length=50, blank=True)
