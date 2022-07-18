@@ -1,19 +1,20 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,900');
 
-#block_product.htmx-swapping {
-    opacity: 0;
-    transition: opacity 500ms ease-out;
-}
 
 header {
   font-family: 'FontAwesome', sans-serif;
-  
+  cursor: pointer;
 }
 
 header div {
   margin-left: 50px;
   font-size: 24px;
   font-weight: bold;
+}
+
+div a {
+  color: #4c4949;
+  text-decoration: none;
 }
 
 header span {
@@ -97,7 +98,6 @@ header span {
   background-color: white;
      
 }
-
 
 .progress-bar li::after{
   content: '';

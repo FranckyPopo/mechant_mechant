@@ -1,5 +1,10 @@
-span_checkout_items = document.querySelector("#checkout_items")
-console.log('ouiiiiiiiiiiiiiiiiiiiii')
+var span_checkout_items = document.querySelector("#checkout_items")
+var next_click=document.querySelectorAll(".next_button");
+var main_form=document.querySelectorAll(".main");
+var step_list = document.querySelectorAll(".progress-bar li");
+var num = document.querySelector(".step-number");
+let formnumber=0;
+
 function toast(text, e) {
     const Toast = Swal.mixin({
         toast: true,
@@ -16,7 +21,7 @@ function toast(text, e) {
 }
 
 htmx.on("product_add_cart", function (e){
-    toast("Produit ajouter au panier", e)
+    toast("Mise ajour du panier", e)
 });
 
 htmx.on("product_delete_cart", function (e){
@@ -24,11 +29,7 @@ htmx.on("product_delete_cart", function (e){
 });
 
 
-var next_click=document.querySelectorAll(".next_button");
-var main_form=document.querySelectorAll(".main");
-var step_list = document.querySelectorAll(".progress-bar li");
-var num = document.querySelector(".step-number");
-let formnumber=0;
+
 
 next_click.forEach(function(next_click_form){
     next_click_form.addEventListener('click',function(){
