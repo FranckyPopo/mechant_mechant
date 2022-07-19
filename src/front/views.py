@@ -1,3 +1,4 @@
+from http.client import HTTPResponse
 from urllib import request
 from venv import create
 from django.shortcuts import render,redirect
@@ -51,23 +52,24 @@ class FrontDetailProduct(View):
         return render(request, self.template_name, locals())
     
     #panier 
-    def post(self, request, product_id):
+class FrontAddCart(View):
+    def post(self, request, productid):
+        
+        # user = request.user
+        # produit = get_object_or_404(models.Products, id=product_id)
+        # # silepanier n'existe on le cree avec 'cart'
+        # cart,  _ = models.Cart.objects.get_or_create(user=user)
+        # #si un objet order dans db existe on associe à user qui correspond au produit sinon on cree
+        # orders, created = models.Order.objects.get_or_create(user=user, product=produit)
 
-        user = request.user
-        produit = get_object_or_404(models.Products, id=product_id)
-        # silepanier n'existe on le cree avec 'cart'
-        cart,  _ = models.Cart.objects.get_or_create(user=user)
-        #si un objet order dans db existe on associe à user qui correspond au produit sinon on cree
-        orders, created = models.Order.objects.get_or_create(user=user, product=produit)
-
-        # si le prrodui
-        if created:
-            cart.order.add(orders)
-            cart.save()
-        else:
-            orders.quantity += 1
-            orders.save()
-        return redirect(reverse("front_product_detail", kwargs={"product_id":product_id }))
+        # # si le prrodui
+        # if created:
+        #     cart.order.add(orders)
+        #     cart.save()
+        # else:
+        #     orders.quantity += 1
+        #     orders.save()
+        return redirect("front_products")   #reverse("front_product_detail", kwargs={"product_id":product_id })
 
 
 class FrontSingleCategory(View):
