@@ -53,8 +53,23 @@ class FrontDetailProduct(View):
 class FrontProductAddCart(View):
     
     def post(self, request, product_pk):
-        models.Cart.add_to_cart(request, product_pk)
-              
+        if request.user.is_authenticated:
+            models.Cart.add_to_cart(request, product_pk)
+        else:
+            request.session.save()
+            cart = request.session.get("cart", False)
+            product_pk = str(product_pk)    
+            
+            if cart:
+                if product_pk in cart:
+                    cart[product_pk] += 1
+                    request.session["cart"] = cart
+                else:
+                    cart[product_pk] = 1
+                    request.session["cart"] = cart
+            else:
+                request.session["cart"] = {product_pk: 1}
+            print(request.session["cart"])
         return HttpResponse(
             "",
             headers={
@@ -68,7 +83,9 @@ class FrontProductDeleteCart(View):
     model = models.Cart
     
     def post(self, request, product_pk):
+        
         models.Cart.delete_to_cart(request, product_pk)
+
         
         return HttpResponse(
             "",
