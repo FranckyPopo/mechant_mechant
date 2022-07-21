@@ -56,7 +56,6 @@ class FrontDetailProduct(View):
 class FrontProductAddCart(View):
     
     def post(self, request, product_pk):
-<<<<<<< HEAD
         if request.user.is_authenticated:
             models.Cart.add_to_cart(request, product_pk)
             
@@ -105,24 +104,14 @@ class FrontProductAddCart(View):
                     })
                 }
             )
-=======
-        models.Cart.add_to_cart(request, product_pk)
-              
-        return HttpResponse(
-            "",
-            headers={
-                "HX-Trigger": json.dumps({
-                    "product_add_cart": context_processors.get_total_number_products(request)
-                })
-            }
-        )
->>>>>>> parent of 9594425 (L'utilisateur a désormais la posibilité d'ajouter des produti dans son panier sans être connecté)
     
 class FrontProductDeleteCart(View):
     model = models.Cart
     
     def post(self, request, product_pk):
+        
         models.Cart.delete_to_cart(request, product_pk)
+
         
         return HttpResponse(
             "",
