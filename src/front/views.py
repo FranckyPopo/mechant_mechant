@@ -53,20 +53,7 @@ class FrontDetailProduct(View):
 class FrontProductAddCart(View):
     
     def post(self, request, product_pk):
-        user = request.user
-        product = models.Products.objects.get(pk=product_pk)
-        cart, _ = models.Cart.objects.get_or_create(user=user)
-        order, create = models.Order.objects.get_or_create(
-            user=user,
-            product=product
-        )
-        
-        if create:
-            cart.order.add(order)
-            cart.save()
-        else:
-            order.quantity += 1
-            order.save()
+        models.Cart.add_to_cart(request, product_pk)
               
         return HttpResponse(
             "",
