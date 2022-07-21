@@ -58,6 +58,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'mechant.context_processors.get_total_number_products',
+                'mechant.context_processors.get_total_number_products_user_anonyme',
             ],
         },
     },
