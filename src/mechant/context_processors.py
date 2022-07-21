@@ -20,7 +20,7 @@ def get_total_number_products(request) -> dict:
 
 
 def get_total_number_products_user_anonyme(request) -> dict:
-    return {"total_products": sum(request.session["cart"].values())}
+    return {"total_products": 0}
     
     
     
