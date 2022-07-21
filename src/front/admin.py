@@ -36,5 +36,10 @@ class SiteContact(admin.ModelAdmin):
     
 @admin.register(models.Cart)
 class Cart(admin.ModelAdmin):
-    list_display = ["session_id", "product", "quantity", "created"]
+    list_display = ["user", "created"]
+    
+@admin.register(models.Order)
+class Cart(admin.ModelAdmin):
+    list_display = ["user", "product", "quantity", "created"]
+    
     

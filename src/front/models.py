@@ -5,6 +5,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
 from colorfield.fields import ColorField
+from django.contrib.auth import get_user_model
 
 
 class Categories(models.Model):
@@ -79,17 +80,31 @@ class Products(models.Model):
             elif self.promotion_reduction:
                 return self.original_price - self.promotion_reduction
 
-class Cart(models.Model):
-    session_id = models.CharField(max_length=150)
+class Order(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=0, validators=[MinValueValidator(1)])
+    quantity = models.PositiveIntegerField(default=1)
     
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
     deleted = models.fields.BooleanField(default=False)
     
     def __str__(self) -> str:
-        return str(self.product)
+        return f"{self.product} ({self.quantity})"
+    
+class Cart(models.Model):
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
+    order = models.ManyToManyField(Order)
+    
+    updated = models.fields.DateTimeField(auto_now=True)
+    created = models.fields.DateTimeField(auto_now_add=True)
+    deleted = models.fields.BooleanField(default=False)
+    
+    def __str__(self) -> str:
+        return self.user.username
+    
+    def add_to_cart(self):
+        pass
 
 class ProductColor(models.Model):
     name = models.CharField(max_length=50, blank=True)
@@ -128,7 +143,11 @@ class Comments(models.Model):
         return self.user.username
     
 class ImageProduct(models.Model):
-    product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="image_product_product")
+    product = models.ForeignKey(
+        Products, 
+        on_delete=models.CASCADE, 
+        related_name="image_product_product"
+    )
     photo = models.ImageField()
     
     updated = models.fields.DateTimeField(auto_now=True)
@@ -169,7 +188,11 @@ class DealOfTheWeenk(models.Model):
         return self.product.name
 
 class BestSellers(models.Model):
-    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        Products, 
+        on_delete=models.CASCADE,
+        related_name="best_sellers_product"
+    )
     active = models.BooleanField(default=True)
     
     updated = models.fields.DateTimeField(auto_now=True)
