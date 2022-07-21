@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import View
-from django.core.serializers import serialize
+
 import json
 
 from front import models
@@ -18,11 +18,7 @@ class FrontCartList(View):
                 user=request.user
             )
             return render(request, self.template_name, context={"cart": cart})
-        else:
-            pk_product_cart = request.session["cart"].keys()
-            cart = [models.Products.objects.get(pk=pk) for pk in pk_product_cart]
-            
-            return render(request, self.template_name, context={"cart_session": cart})
+        return render(request, self.template_name, context={"cart": cart})
     
 class FrontProducts(View):
     template_name = "front/pages/categories.html"
@@ -40,6 +36,7 @@ class FrontIndex(View):
     template_name = "front/pages/index.html"
     
     def get(self, request):
+            
         data = {
             "categories": models.Categories.objects.all().filter(active=True),
             "products": models.Products.objects.all().filter(active=True),
@@ -58,52 +55,29 @@ class FrontProductAddCart(View):
     def post(self, request, product_pk):
         if request.user.is_authenticated:
             models.Cart.add_to_cart(request, product_pk)
-            
-            return HttpResponse(
-                "",
-                headers={
-                    "HX-Trigger": json.dumps({
-                        "product_add_cart": context_processors.get_total_number_products(request)
-                    })
-                }
-            )
         else:
             request.session.save()
             cart = request.session.get("cart", False)
-            product = models.Products.objects.filter(pk=product_pk)   
+            product_pk = str(product_pk)    
             
             if cart:
-                for order in cart:
-                    if order["product"] == product:
-                        
-                        order["quantity"] += 1
-                        request.session["cart"] = cart
-                        break
+                if product_pk in cart:
+                    cart[product_pk] += 1
+                    request.session["cart"] = cart
                 else:
-                    print(type(order["product"]))
-                    cart.append({
-                        "product": serialize("json", product),
-                        "quantity": 1,
-                    })
+                    cart[product_pk] = 1
                     request.session["cart"] = cart
             else:
-                request.session["cart"] = [
-                    {
-                        "product": serialize("json", product),
-                        "quantity": 1,
-                    }
-                ]
-                
+                request.session["cart"] = {product_pk: 1}
             print(request.session["cart"])
-
-            return HttpResponse(
-                "",
-                headers={
-                    "HX-Trigger": json.dumps({
-                        "product_add_cart": context_processors.get_total_number_products_user_anonyme(request)
-                    })
-                }
-            )
+        return HttpResponse(
+            "",
+            headers={
+                "HX-Trigger": json.dumps({
+                    "product_add_cart": context_processors.get_total_number_products(request)
+                })
+            }
+        )
     
 class FrontProductDeleteCart(View):
     model = models.Cart
