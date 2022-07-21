@@ -1,7 +1,8 @@
-import json
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import View
+
+import json
 
 from front import models
 from mechant import context_processors
@@ -12,10 +13,12 @@ class FrontCartList(View):
     model = models.Cart
     
     def get(self, request):
-        carts = self.model.objects.filter(
-            session_id=request.session._get_or_create_session_key()
-        )
-        return render(request, self.template_name, context={"carts": carts})
+        if request.user.is_authenticated:
+            cart = self.model.objects.get(
+                user=request.user
+            )
+            return render(request, self.template_name, context={"cart": cart})
+        return render(request, self.template_name, context={"cart": cart})
     
 class FrontProducts(View):
     template_name = "front/pages/categories.html"
@@ -33,6 +36,7 @@ class FrontIndex(View):
     template_name = "front/pages/index.html"
     
     def get(self, request):
+            
         data = {
             "categories": models.Categories.objects.all().filter(active=True),
             "products": models.Products.objects.all().filter(active=True),
@@ -49,19 +53,21 @@ class FrontDetailProduct(View):
 class FrontProductAddCart(View):
     
     def post(self, request, product_pk):
-        session_id = request.session._get_or_create_session_key()
+        user = request.user
         product = models.Products.objects.get(pk=product_pk)
+        cart, _ = models.Cart.objects.get_or_create(user=user)
+        order, create = models.Order.objects.get_or_create(
+            user=user,
+            product=product
+        )
         
-        objet, create = models.Cart.objects.get_or_create(session_id=session_id, product=product)
-        quantity = request.POST.get("quantity")
-        
-        if quantity:
-            objet.quantity = quantity
-            objet.save()
+        if create:
+            cart.order.add(order)
+            cart.save()
         else:
-            objet.quantity += 1
-            objet.save()
-        
+            order.quantity += 1
+            order.save()
+              
         return HttpResponse(
             "",
             headers={
@@ -85,3 +91,13 @@ class FrontProductDeleteCart(View):
                 })
             }
         )
+
+# Payments
+class FrontPayments(View):
+    template_name = "front/pages/payments.html"
+    
+    def get(self, request):
+        if request.user.is_authenticated:
+            return render(request, self.template_name)
+        request.COOKIES["order"] = "true"
+        return redirect("authentication_login")
