@@ -107,7 +107,7 @@ class Cart(models.Model):
     @classmethod
     def add_to_cart(cls, request: HttpRequest, product_pk: int) -> None:
         user = request.user
-        quantity = int(request.POST.get("quantity", 0))
+        quantity = request.POST.get("quantity", False)
         product = Products.objects.get(pk=product_pk)
         cart, _ = cls.objects.get_or_create(user=user)
         order, create = Order.objects.get_or_create(
