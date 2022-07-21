@@ -124,9 +124,9 @@
 										</div>
 									</div>
 									<div class="red_button add_to_cart_button">
-										<form action="{% url 'front_index' %}" method="post">
+										<form action="{% url 'add_to_card' product.id %}" method="post">
 											{% csrf_token %}
-											<a href="{% url 'add_to_card' product.id %}" type="submit">add to cart</a>
+											<a href="" type="submit">add to cart</a>
 										</form>
 									</div>
 								</div>
