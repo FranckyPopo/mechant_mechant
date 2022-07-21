@@ -125,6 +125,12 @@ class Cart(models.Model):
             order.quantity += 1
             order.save()
             
+    @classmethod
+    def delete_to_cart(cls, request: HttpRequest, product_pk: int) -> None:
+        user = request.user
+        product = cls.objects.get(user=user).order.get(product__pk=product_pk)
+        product.delete()
+            
 class ProductColor(models.Model):
     name = models.CharField(max_length=50, blank=True)
     code_hex = ColorField(default="#FF0000")

@@ -68,9 +68,7 @@ class FrontProductDeleteCart(View):
     model = models.Cart
     
     def post(self, request, product_pk):
-        user = request.user
-        product = self.model.objects.get(user=user).order.get(product__pk=product_pk)
-        product.delete()
+        models.Cart.delete_to_cart(request, product_pk)
         
         return HttpResponse(
             "",
