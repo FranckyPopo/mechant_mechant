@@ -74,7 +74,7 @@
                                         </a>
                                         <ul class="account_selection" style="width: 150px;">
                                             {% if request.user.is_authenticated %}
-                                                <li><a href=""><i class="fa fa-sign-in" aria-hidden="true"></i>Mon compte</a></li>
+                                                <li><a href="{% url 'authentication_edit_profile' %}"><i class="fa fa-sign-in" aria-hidden="true"></i>Mon compte</a></li>
                                                 <li><a href="{% url 'authentication_logout' %}"><i class="fa fa-user-plus" aria-hidden="true"></i>Deconnection</a></li>
                                             {% else %}
                                                 <li><a href="{% url 'authentication_login' %}"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
@@ -127,6 +127,34 @@
         <div class="fs_menu_overlay"></div>
 
         {% block 'content' %}{% endblock 'content' %}
+
+        <!-- Newsletter -->
+		<div class="newsletter">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="newsletter_text d-flex flex-column justify-content-center align-items-lg-start align-items-md-center text-center">
+							<h4 id="test">Newsletter</h4>
+							<p>Subscribe to our newsletter and get 20% off your first purchase</p>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<form
+							hx-post="{% url 'auhthentication_newsLater_add' %}" 
+							hx-target="#test"
+							hx-swap='innerHTML' 
+						
+							method="post" >
+							{% csrf_token %}
+							<div class="newsletter_form d-flex flex-md-row flex-column flex-xs-column align-items-center justify-content-lg-end justify-content-center">
+								<input id="newsletter_email" name="email" type="email" placeholder="Your email" required="required" data-error="Valid email is required.">
+								<button id="newsletter_submit" type="submit" class="newsletter_submit_btn trans_300" value="Submit">subscribe</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 
         <!-- Footer -->
         <footer class="footer">

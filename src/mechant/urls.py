@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.urls import path
 
 from front import views
+from features import views as vws
 import authentication.views as authentication_view
 from django.conf import settings
 from django.conf.urls.static import static
@@ -21,9 +22,20 @@ urlpatterns = [
     path('register/', authentication_view.AuthenticationPageRegister.as_view(), name="authentication_register"),
     path('login/', authentication_view.AuthenticationLogin.as_view(), name="authentication_login"),
     
+<<<<<<< HEAD
     path('logout/', authentication_view.authentication_logout, name="authentication_logout"),
     
     path('user/accounts/edit-profile', authentication_view.authentication_edit_profile.as_view(), name="authentication_edit_profile"),
+=======
+    path(
+        'user/accounts/edit-profile',
+        authentication_view.authentication_edit_profile.as_view(),
+        name="authentication_edit_profile"
+    ),
+    path("send/",
+        vws.AuhthenticationNewsLaterAdd.as_view(),
+        name="send_mail"),
+>>>>>>> 34021d3 (reglage send message ,ajout connect page edit prpfile,)
     
 ]
 

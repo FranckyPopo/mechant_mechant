@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 from http.client import HTTPResponse
 from urllib import request
 from venv import create
+=======
+import json
+from django.http import HttpResponse
+>>>>>>> 34021d3 (reglage send message ,ajout connect page edit prpfile,)
 from django.shortcuts import render,redirect
 from django.views.generic import View
 from front import models
@@ -16,11 +21,30 @@ class FrontProducts(View):
 
 class FrontContact(View):
     template_name = "front/pages/contact.html"
-    
+    alert =""
+    success = True
     def get(self, request):
         
         return render(request, self.template_name)
+
+    def post(self,request ):
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        web_site = request.POST.get('website')
+        message= request.POST.get('message')
+        contact = models.Contact.objects.create(name=name, email=email, web_site = web_site, message=message)
+        print(contact)
+
+        alert = 'messsage envoyé!'
     
+        data = {
+        'alert': alert,
+        'success': self.success
+        }
+
+        return render(request, self.template_name, data)
+        
+
 class FrontIndex(View):
     template_name = "front/pages/index.html"
     
@@ -40,6 +64,12 @@ class FrontIndex(View):
         
         pass
     
+<<<<<<< HEAD
+=======
+    def get(self, request, product_id):
+        product_by_id = models.Products.objects.get(id=product_id)
+        return render(request, self.template_name, locals())
+>>>>>>> 34021d3 (reglage send message ,ajout connect page edit prpfile,)
     
     
     

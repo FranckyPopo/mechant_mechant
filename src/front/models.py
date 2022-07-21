@@ -1,5 +1,7 @@
 
-from this import s
+
+
+import email
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -200,4 +202,14 @@ class SiteContact(models.Model):
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
     deleted = models.fields.BooleanField(default=False)
-    
+
+class Contact(models.Model):
+    name = models.CharField(max_length=20)
+    email = models.EmailField()
+    web_site = models.CharField(max_length=20)
+    message = models.TextField()
+    is_active = models.BooleanField(default=True)
+
+    updated = models.fields.DateTimeField(auto_now=True)
+    created = models.fields.DateTimeField(auto_now_add=True)
+    deleted = models.fields.BooleanField(default=False)

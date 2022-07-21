@@ -34,6 +34,7 @@ class BestSellers(admin.ModelAdmin):
 class SiteContact(admin.ModelAdmin):
     list_display = ["phone_number", "email", "created"]
     
+<<<<<<< HEAD
 @admin.register(models.ProductColor)
 class ProductColor(admin.ModelAdmin):
     list_display = ["product", "color"]
@@ -46,4 +47,14 @@ class CartProduct(admin.ModelAdmin):
 @admin.register(models.Order)
 class OrderProduct(admin.ModelAdmin):
     list_display = ["Product", "Quantity","is_ordered"]
+=======
+@admin.register(models.OrderItem)
+class OrderItem(admin.ModelAdmin):
+    list_display = ["session_id", "product", "quantity", "created"]
+
+
+@admin.register(models.Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ["name", "email", "web_site", "message","created","updated","updated"]
+>>>>>>> 34021d3 (reglage send message ,ajout connect page edit prpfile,)
     

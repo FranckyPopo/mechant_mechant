@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -119,16 +120,19 @@
 		</div>
 
 	</header>
+=======
+{% extends 'front/base/base.html' %}
+{% load static %}
+>>>>>>> 34021d3 (reglage send message ,ajout connect page edit prpfile,)
 
-	<div class="fs_menu_overlay"></div>
+{% block 'content' %}
 
-	<!-- Hamburger Menu -->
-
-	<div class="hamburger_menu">
-		<div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
-		<div class="hamburger_menu_content text-right">
-			<ul class="menu_top_nav">
-				<li class="menu_item has-children">
+<!-- Hamburger Menu -->
+<div class="hamburger_menu">
+	<div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
+	<div class="hamburger_menu_content text-right">
+		<ul class="menu_top_nav">
+			<li class="menu_item has-children">
 					<a href="#">
 						usd
 						<i class="fa fa-angle-down"></i>
@@ -245,9 +249,16 @@
 							<span id="quantity_value">1</span>
 							<span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
 						</div>
+<<<<<<< HEAD
 						{% if user.is_authenticated %}
 							<div class="red_button add_to_cart_button"><a href="">add to cart</a></div>
 						{% endif %}
+=======
+						<div class="red_button add_to_cart_button">
+							
+							<a href="#">add to cart</a>
+						</div>
+>>>>>>> 34021d3 (reglage send message ,ajout connect page edit prpfile,)
 						<div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
 					</div>
 				</div>
@@ -468,6 +479,7 @@
 		</div>
 	</div>
 
+<<<<<<< HEAD
 	<!-- Newsletter -->
 
 	<div class="newsletter">
@@ -540,3 +552,6 @@
 </body>
 
 </html>
+=======
+	{% endblock 'content' %}
+>>>>>>> 34021d3 (reglage send message ,ajout connect page edit prpfile,)

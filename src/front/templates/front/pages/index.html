@@ -105,6 +105,7 @@
 										<div  style="width:60px;" class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-{{ product.get_product_reduction }}XOF</span></div>
 
 										{% endif %}
+<<<<<<< HEAD
 										
 										<div class="product_info">
 											<h6 class="product_name">
@@ -121,6 +122,30 @@
 												<span>{{product.original_price}} Fcfa</span>
 												{% endif %}
 											</div>
+=======
+											<div class="product_info">
+												<h6 class="product_name">
+													<a href="{% url 'front_product_detail' product.id %}">{{ product.name }}</a>
+												</h6>
+												<div class="product_price">
+													{% comment %} Le prix est affiché en fonction de si il y'a une promotion ou pas {% endcomment %}
+													{% if product.is_promotion %}
+														{{ product.get_final_product_price }} XOF
+														<span>{{ product.original_price }} XOF</span>
+													{% else %}
+														{{ product.original_price }} XOF
+													{% endif %}
+												</div>
+											</div>
+									</div>
+									<form action="" method="post">
+										{% csrf_token %}
+										<div class="red_button add_to_cart_button"
+											hx-post="{% url 'front_product_add_cart' product.pk %}"
+											hx-swap="none"
+											hx-triger="click">
+											<a>add to cart</a>
+>>>>>>> 34021d3 (reglage send message ,ajout connect page edit prpfile,)
 										</div>
 									</div>
 									<div class="red_button add_to_cart_button">
@@ -429,6 +454,7 @@
 				</div>
 			</div>
 		</div>
+<<<<<<< HEAD
 
 		<!-- Newsletter -->
 
@@ -453,6 +479,8 @@
 			</div>
 		</div>
 
+=======
+>>>>>>> 34021d3 (reglage send message ,ajout connect page edit prpfile,)
 	
 	{% endblock 'content' %}
 
