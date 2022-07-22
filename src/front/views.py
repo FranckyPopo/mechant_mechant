@@ -98,9 +98,16 @@ class FrontProductAddCart(View):
         dans un panier via la session de l'utilisateur"""
         
         request.session.save()
+        quantity = request.POST.get("quantity", False)
         cart = request.session.get("cart", False)
             
-        if cart:
+        if quantity:
+            for order in cart:
+                if order["pk"] == product_pk:
+                    order["quantity"] = int(quantity)
+                    request.session["cart"] = cart
+                    break
+        elif cart:
             for order in cart:
                 if order["pk"] == product_pk:
                     order["quantity"] += 1
@@ -112,7 +119,7 @@ class FrontProductAddCart(View):
                     "quantity": 1
                 })
                 request.session["cart"] = cart
-        else:
+        elif not cart:
             request.session["cart"] = [
                 {"pk": product_pk, "quantity": 1}
             ]
