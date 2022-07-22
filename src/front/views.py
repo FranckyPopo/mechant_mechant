@@ -25,7 +25,7 @@ class FrontIndex(View):
     template_name = "front/pages/index.html"
     
     def get(self, request):
-            
+        print(request.session.get("cart", False))
         data = {
             "categories": models.Categories.objects.all().filter(active=True),
             "products": models.Products.objects.all().filter(active=True),
@@ -89,7 +89,7 @@ class FrontProductAddCart(View):
                 "",
                 headers={
                     "HX-Trigger": json.dumps({
-                        "product_add_cart": context_processors.get_total_number_products_user_anonyme(request)
+                        "product_add_cart": context_processors.get_total_number_products(request)
                     })
                 }
             )
@@ -148,7 +148,7 @@ class FrontProductDeleteCart(View):
                 "",
                 headers={
                     "HX-Trigger": json.dumps({
-                        "product_delete_cart": context_processors.get_total_number_products_user_anonyme(request)
+                        "product_delete_cart": context_processors.get_total_number_products(request)
                     })
                 }
             )
