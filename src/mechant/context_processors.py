@@ -8,8 +8,10 @@ def get_total_number_products(request) -> dict:
     
     if request.user.is_authenticated:
         total_quantity_product = 0
-        orders = models.Cart.objects.get(user=request.user).order.all()
-        for order in orders: total_quantity_product += order.quantity
+        orders, _ = models.Cart.objects.get_or_create(user=request.user)
+        
+        for order in orders.order.all(): total_quantity_product += order.quantity
+        
         return {"total_products": total_quantity_product}
     else:
         total_products = [item["quantity"] for item in request.session.get("cart", [])]
