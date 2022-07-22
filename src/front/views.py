@@ -8,18 +8,6 @@ from front import models
 from mechant import context_processors
 
     
-class FrontCartList(View):
-    template_name = "front/pages/cart_list.html"
-    model = models.Cart
-    
-    def get(self, request):
-        if request.user.is_authenticated:
-            cart = self.model.objects.get(
-                user=request.user
-            )
-            return render(request, self.template_name, context={"cart": cart})
-        return render(request, self.template_name, context={"cart": cart})
-    
 class FrontProducts(View):
     template_name = "front/pages/categories.html"
     
@@ -48,6 +36,21 @@ class FrontDetailProduct(View):
     
     def get(self, request):
         return render(request, self.template_name)
+    
+class FrontCartList(View):
+    template_name = "front/pages/cart_list.html"
+    model = models.Cart
+    
+    def get(self, request):
+        if request.user.is_authenticated:
+            cart = self.model.objects.get(
+                user=request.user
+            )
+            return render(request, self.template_name, context={"cart": cart})
+        else:
+            session_cart = request.session["cart"]
+            
+        return render(request, self.template_name, context={"cart": cart})
 
 # Views cart
 class FrontProductAddCart(View):
@@ -61,14 +64,22 @@ class FrontProductAddCart(View):
             product_pk = str(product_pk)    
             
             if cart:
-                if product_pk in cart:
-                    cart[product_pk] += 1
-                    request.session["cart"] = cart
+                for order in cart:
+                    if order["pk"] == product_pk:
+                        order["quantity"] += 1
+                        request.session["cart"] = cart
+                        break
                 else:
-                    cart[product_pk] = 1
+                    cart.append({
+                        "pk": product_pk,
+                        "quantity": 1
+                    })
                     request.session["cart"] = cart
             else:
-                request.session["cart"] = {product_pk: 1}
+                request.session["cart"] = [
+                    {"pk": product_pk, "quantity": 1}
+                ]
+                
             print(request.session["cart"])
         return HttpResponse(
             "",
