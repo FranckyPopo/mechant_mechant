@@ -68,6 +68,7 @@ class FrontCartList(View):
             
         return cart_session
 
+
 # Views cart
 class FrontProductAddCart(View):
     
@@ -92,7 +93,10 @@ class FrontProductAddCart(View):
                     })
                 }
             )
-    
+        
+    def http_method_not_allowed(self, request, *args, **kwargs):
+        return redirect("front_index")
+
     def add_to_cart_session(self, request: HttpRequest, product_pk: str) -> None:
         """Cette méthode va permtre d'ajouter des produits
         dans un panier via la session de l'utilisateur"""
@@ -148,6 +152,9 @@ class FrontProductDeleteCart(View):
                     })
                 }
             )
+            
+    def http_method_not_allowed(self, request, *args, **kwargs):
+        return redirect("front_index")
 
     def delete_to_cart_session(self, request: HttpRequest, product_pk: str) -> None:
         cart = request.session.get("cart", False)
