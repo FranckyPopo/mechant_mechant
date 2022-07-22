@@ -20,7 +20,8 @@ def get_total_number_products(request) -> dict:
 
 
 def get_total_number_products_user_anonyme(request) -> dict:
-    return {"total_products": 0}
+    total_products = [item["quantity"] for item in request.session.get("cart", [])]
+    return {"total_products": sum(total_products)}
     
     
     
