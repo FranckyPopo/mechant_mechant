@@ -8,7 +8,6 @@ import json
 from front import models
 from mechant import context_processors
 
-    
 class FrontProducts(View):
     template_name = "front/pages/categories.html"
     
@@ -25,7 +24,6 @@ class FrontIndex(View):
     template_name = "front/pages/index.html"
     
     def get(self, request):
-        print(request.session.get("cart", False))
         data = {
             "categories": models.Categories.objects.all().filter(active=True),
             "products": models.Products.objects.all().filter(active=True),
@@ -171,6 +169,6 @@ class FrontPayments(View):
     
     def get(self, request):
         if request.user.is_authenticated:
-            return render(request, self.template_name)
+            return redirect("front_payments")
         request.COOKIES["order"] = "true"
         return redirect("authentication_login")
