@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import View
+from django.http import HttpRequest
 
 import json
 
@@ -48,17 +49,24 @@ class FrontCartList(View):
             )
             return render(request, self.template_name, context={"cart": cart})
         else:
-            cart = request.session["cart"]
-            cart_session = []
-            
-            for order in cart:
-                instance = {
-                    "product": models.Products.objects.get(pk=order["pk"]),
-                    "quantity": order["quantity"]
-                }
-                cart_session.append(instance)
-            
+            cart_session = self.get_cart_session(request)
             return render(request, self.template_name, context={"cart_session": cart_session})
+        
+    def get_cart_session(self, request: HttpRequest) -> list:
+        """Cette méthode va nous permetre de récupérer le panier
+        de l'utilisateur via ça session"""
+        
+        cart = request.session.get("cart", [])
+        cart_session = []
+        
+        for order in cart:
+            instance = {
+                "product": models.Products.objects.get(pk=order["pk"]),
+                "quantity": order["quantity"]
+            }
+            cart_session.append(instance)
+            
+        return cart_session
 
 # Views cart
 class FrontProductAddCart(View):
@@ -66,37 +74,48 @@ class FrontProductAddCart(View):
     def post(self, request, product_pk):
         if request.user.is_authenticated:
             models.Cart.add_to_cart(request, product_pk)
-        else:
-            request.session.save()
-            cart = request.session.get("cart", False)
-            product_pk = str(product_pk)    
-            
-            if cart:
-                for order in cart:
-                    if order["pk"] == product_pk:
-                        order["quantity"] += 1
-                        request.session["cart"] = cart
-                        break
-                else:
-                    cart.append({
-                        "pk": product_pk,
-                        "quantity": 1
+            return HttpResponse(
+                "",
+                headers={
+                    "HX-Trigger": json.dumps({
+                        "product_add_cart": context_processors.get_total_number_products(request)
                     })
+                }
+            )
+        else:
+            self.add_to_cart_session(request, str(product_pk))
+            return HttpResponse(
+                "",
+                headers={
+                    "HX-Trigger": json.dumps({
+                        "product_add_cart": context_processors.get_total_number_products_user_anonyme(request)
+                    })
+                }
+            )
+    
+    def add_to_cart_session(self, request: HttpRequest, product_pk: str) -> None:
+        """Cette méthode va permtre d'ajouter des produits
+        dans un panier via la session de l'utilisateur"""
+        
+        request.session.save()
+        cart = request.session.get("cart", False)
+            
+        if cart:
+            for order in cart:
+                if order["pk"] == product_pk:
+                    order["quantity"] += 1
                     request.session["cart"] = cart
+                    break
             else:
-                request.session["cart"] = [
-                    {"pk": product_pk, "quantity": 1}
-                ]
-                
-            print(request.session["cart"])
-        return HttpResponse(
-            "",
-            headers={
-                "HX-Trigger": json.dumps({
-                    "product_add_cart": context_processors.get_total_number_products(request)
+                cart.append({
+                    "pk": product_pk,
+                    "quantity": 1
                 })
-            }
-        )
+                request.session["cart"] = cart
+        else:
+            request.session["cart"] = [
+                {"pk": product_pk, "quantity": 1}
+            ]
     
 class FrontProductDeleteCart(View):
     model = models.Cart
