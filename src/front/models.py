@@ -137,6 +137,32 @@ class Cart(models.Model):
         product = cls.objects.get(user=user).order.get(product__pk=product_pk)
         product.delete()
             
+    @classmethod
+    def add_cart_session_bd(cls, request: HttpRequest) -> None:
+        """Cette méthode va permetre d'ajouter le pannier qui se
+        trouve dans la session de l'utilisateur dans le model Cart"""
+        
+        cart_session = request.session.get("cart")
+        user = request.user
+        cart, _ = cls.objects.get_or_create(user=user)
+        
+        for item in cart_session:
+            product = Products.objects.get(pk=item["pk"])
+            order, create = Order.objects.get_or_create(
+                user=user,
+                product=product
+            )
+            
+            if create:
+                order.quantity = item["quantity"]
+                order.save()
+                cart.order.add(order)
+                cart.save()
+            else:
+                order.quantity += item["quantity"]
+                order.save()
+            
+        
 class ProductColor(models.Model):
     name = models.CharField(max_length=50, blank=True)
     code_hex = ColorField(default="#FF0000")
