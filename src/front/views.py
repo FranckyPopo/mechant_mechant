@@ -48,9 +48,17 @@ class FrontCartList(View):
             )
             return render(request, self.template_name, context={"cart": cart})
         else:
-            session_cart = request.session["cart"]
+            cart = request.session["cart"]
+            cart_session = []
             
-        return render(request, self.template_name, context={"cart": cart})
+            for order in cart:
+                instance = {
+                    "product": models.Products.objects.get(pk=order["pk"]),
+                    "quantity": order["quantity"]
+                }
+                cart_session.append(instance)
+            
+            return render(request, self.template_name, context={"cart_session": cart_session})
 
 # Views cart
 class FrontProductAddCart(View):

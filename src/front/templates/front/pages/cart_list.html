@@ -7,22 +7,21 @@
         <div class="container h-100 py-5">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-10">
-                    {% if carts %}
+                    {% if cart %}
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h3 class="fw-normal mb-0 text-black">Shopping Cart</h3>
                         </div>
-                        {% for cart in carts %}
-
+                        {% for item in cart.order.all %}
                             <div class="card rounded-3 mb-4" id="block_product">
                                 <div class="card-body p-4">
                                 <div class="row d-flex justify-content-between align-items-center">
                                     <div class="col-md-2 col-lg-2 col-xl-2" style="cursor: pointer;">
                                     <img
-                                        src="{{ cart.product.photo.url }}"
+                                        src="{{ item.product.photo.url }}"
                                         class="img-fluid rounded-3" alt="Cotton T-shirt">
                                     </div>
                                     <div class="col-md-3 col-lg-3 col-xl-3">
-                                    <p class="lead fw-normal mb-2">{{ cart.product.name }}</p>
+                                    <p class="lead fw-normal mb-2">{{ item.product.name }}</p>
                                     <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Grey</p>
                                     </div>
                                     <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
@@ -33,7 +32,7 @@
                                                 class="btn btn-link px-2"
                                                 onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
                                                 style="cursor: pointer;"
-                                                hx-post="{% url 'front_product_add_cart' cart.product.pk %}"
+                                                hx-post="{% url 'front_product_add_cart' item.product.pk %}"
                                                 hx-trigger="click"
                                                 hx-swap="none">
                                                 <i class="fas fa-minus"></i>
@@ -42,10 +41,10 @@
                                                 id="form1" 
                                                 min="0" 
                                                 name="quantity" 
-                                                value="{{ cart.quantity }}" 
+                                                value="{{ item.quantity }}" 
                                                 type="number"
                                                 class="form-control form-control-sm text-secondary"  
-                                                hx-post="{% url 'front_product_add_cart' cart.product.pk %}"
+                                                hx-post="{% url 'front_product_add_cart' item.product.pk %}"
                                                 hx-trigger="keyup delay:1s"
                                                 hx-swap="none"/>
 
@@ -54,7 +53,7 @@
                                                     class="btn btn-link px-2"
                                                     onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
                                                     style="cursor: pointer;"
-                                                    hx-post="{% url 'front_product_add_cart' cart.product.pk %}"
+                                                    hx-post="{% url 'front_product_add_cart' item.product.pk %}"
                                                     hx-trigger="click"
                                                     hx-swap="none"
                                                     >
@@ -64,7 +63,7 @@
                         
                                     </div>
                                     <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                    <h5 class="mb-0">{{ cart.product.get_final_product_price }} XOF</h5>
+                                    <h5 class="mb-0">{{ item.product.get_final_product_price }} XOF</h5>
                                     </div>
 
                                     <!-- Button delete -->
@@ -74,7 +73,7 @@
                                             <a
                                                 class="text-danger"
                                                 style="cursor: pointer;"
-                                                hx-post="{% url 'front_product_delete_cart' cart.pk %}"
+                                                hx-post="{% url 'front_product_delete_cart' item.product.pk %}"
                                                 hx-swap="outerHTML swap:500ms"
                                                 hx-trigger="click"
                                                 hx-confirm="Êtes-vous sûr ?"
@@ -86,21 +85,121 @@
                                 </div>
                                 </div>
                             </div>
-                        
                         {% endfor %}
                 
-                        <div class="card">
-                            <div class="card-body">
-                            <button type="button" 
-                                class="btn btn-danger fw-bold btn-block btn-lg text-light"
-                                style="cursor: pointer;">
-                                Proceed to Pay
-                            </button>
+                            <div class="card">
+                                <div class="card-body">
+                                
+                                <button type="button" 
+                                    
+                                    class="btn btn-danger fw-bold btn-block btn-lg text-light"
+                                    style="cursor: pointer;">
+                                    <a href="{% url 'front_payments' %}"
+                                        style="text-decoration: none; color: white;">
+                                        Proceed to Pay
+                                    </a>
+                                </button>
+                                </div>
                             </div>
+                        
+                    {% elif cart_session %}
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3 class="fw-normal mb-0 text-black">Shopping Cart</h3>
                         </div>
-                    {% else %}
-                        <h2>Vous avez rien dans vôtre parnier</h2>
-                    {% endif %}
+                        {% for item in cart_session %}
+                            <div class="card rounded-3 mb-4" id="block_product">
+                                <div class="card-body p-4">
+                                <div class="row d-flex justify-content-between align-items-center">
+                                    <div class="col-md-2 col-lg-2 col-xl-2" style="cursor: pointer;">
+                                    <img
+                                        src="{{ item.product.photo.url }}"
+                                        class="img-fluid rounded-3" alt="Cotton T-shirt">
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                    <p class="lead fw-normal mb-2">{{ item.product.name }}</p>
+                                    <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Grey</p>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+
+                                        <form  method="post">
+                                            {% csrf_token %}
+                                            <button 
+                                                class="btn btn-link px-2"
+                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+                                                style="cursor: pointer;"
+                                                hx-post="{% url 'front_product_add_cart' item.product.pk %}"
+                                                hx-trigger="click"
+                                                hx-swap="none">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                            <input 
+                                                id="form1" 
+                                                min="0" 
+                                                name="quantity" 
+                                                value="{{ item.quantity }}" 
+                                                type="number"
+                                                class="form-control form-control-sm text-secondary"  
+                                                hx-post="{% url 'front_product_add_cart' item.product.pk %}"
+                                                hx-trigger="keyup delay:1s"
+                                                hx-swap="none"/>
+
+                                                <!-- Button Plus -->
+                                                <button 
+                                                    class="btn btn-link px-2"
+                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                                                    style="cursor: pointer;"
+                                                    hx-post="{% url 'front_product_add_cart' item.product.pk %}"
+                                                    hx-trigger="click"
+                                                    hx-swap="none"
+                                                    >
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                        </form>
+                        
+                                    </div>
+                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                    <h5 class="mb-0">{{ item.product.get_final_product_price }} XOF</h5>
+                                    </div>
+
+                                    <!-- Button delete -->
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                            <a
+                                                class="text-danger"
+                                                style="cursor: pointer;"
+                                                hx-post="{% url 'front_product_delete_cart' item.product.pk %}"
+                                                hx-swap="outerHTML swap:500ms"
+                                                hx-trigger="click"
+                                                hx-confirm="Êtes-vous sûr ?"
+                                                hx-target="closest #block_product">
+                                                <i class="fas fa-trash fa-lg"></i>
+                                            </a>
+                                        </div>
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                
+                            <div class="card">
+                                <div class="card-body">
+                                
+                                <button type="button" 
+                                    
+                                    class="btn btn-danger fw-bold btn-block btn-lg text-light"
+                                    style="cursor: pointer;">
+                                    <a href="{% url 'front_payments' %}"
+                                        style="text-decoration: none; color: white;">
+                                        Proceed to Pay
+                                    </a>
+                                </button>
+                                </div>
+                            </div>
+                            
+                        {% else %}
+                            <h2>Vous avez rien dans vôtre parnier</h2>
+                        {% endif %}
                 
                 </div>
             </div>
