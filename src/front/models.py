@@ -106,6 +106,9 @@ class Cart(models.Model):
     
     @classmethod
     def add_to_cart(cls, request: HttpRequest, product_pk: int) -> None:
+        """Cette méthode va permetre d'ajouter des produits dans
+        le panier de 'utilisate quand il est connecté"""
+        
         user = request.user
         quantity = request.POST.get("quantity", False)
         product = Products.objects.get(pk=product_pk)
@@ -127,6 +130,9 @@ class Cart(models.Model):
             
     @classmethod
     def delete_to_cart(cls, request: HttpRequest, product_pk: int) -> None:
+        """Cette méthode va permetre de supprimer un produit dans
+        le panier de l'utilisateur quand il est connecté"""
+        
         user = request.user
         product = cls.objects.get(user=user).order.get(product__pk=product_pk)
         product.delete()
