@@ -128,19 +128,36 @@ class FrontProductDeleteCart(View):
     model = models.Cart
     
     def post(self, request, product_pk):
-        
-        models.Cart.delete_to_cart(request, product_pk)
+        if request.user.is_authenticated:        
+            models.Cart.delete_to_cart(request, product_pk)
+            return HttpResponse(
+                "",
+                headers={
+                    "HX-Trigger": json.dumps({
+                        "product_delete_cart": context_processors.get_total_number_products(request)
+                    })
+                }
+            )
+        else:
+            self.delete_to_cart_session(request, str(product_pk))
+            return HttpResponse(
+                "",
+                headers={
+                    "HX-Trigger": json.dumps({
+                        "product_delete_cart": context_processors.get_total_number_products_user_anonyme(request)
+                    })
+                }
+            )
 
+    def delete_to_cart_session(self, request: HttpRequest, product_pk: str) -> None:
+        cart = request.session.get("cart", False)
         
-        return HttpResponse(
-            "",
-            headers={
-                "HX-Trigger": json.dumps({
-                    "product_delete_cart": context_processors.get_total_number_products(request)
-                })
-            }
-        )
-
+        for order in cart:
+            if order["pk"] == product_pk:
+                cart.remove(order)
+                request.session["cart"] = cart
+                break
+        
 # Payments
 class FrontPayments(View):
     template_name = "front/pages/payments.html"
