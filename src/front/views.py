@@ -1,7 +1,7 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import View
-from django.http import HttpRequest
+from django.urls import reverse
 
 import json
 
@@ -167,8 +167,11 @@ class FrontProductDeleteCart(View):
 class FrontPayments(View):
     template_name = "front/pages/payments.html"
     
-    def get(self, request):
+    def get(self, request):      
+        url = reverse("authentication_login")  
+        response = HttpResponseRedirect(url)
+        response.set_cookie("buy", 1)
+        
         if request.user.is_authenticated:
-            return redirect("front_payments")
-        request.COOKIES["order"] = "true"
-        return redirect("authentication_login")
+            return render(request, self.template_name)
+        return response

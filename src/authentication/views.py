@@ -45,9 +45,10 @@ class AuthenticationLogin(View):
                 login(request, user)
                 
                 # Si l'utilisateur a un panier dans ça session on l'ajout a la bd 
-                if request.session.get("cart", False):
-                    Cart.add_cart_session_bd(request)
-                return redirect("front_index")
+                if request.session.get("cart", False): Cart.add_cart_session_bd(request)
+                
+                if request.COOKIES.get('buy', False): return redirect("front_payments")
+                else: return redirect("front_index")
             
         return render(request, self.template_name, context={"form": self.form})
 
