@@ -161,9 +161,7 @@ class Cart(models.Model):
             else:
                 order.quantity += item["quantity"]
                 order.save()
-
-                
-            
+     
 class City(models.Model):
     name = models.CharField(max_length=150)
     active = models.BooleanField(default=True)
@@ -177,7 +175,7 @@ class City(models.Model):
     
 class District(models.Model):
     name = models.CharField(max_length=150)
-    # city = models.ForeignKey(City, on_delete=models.CASCADE)
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
     
     updated = models.fields.DateTimeField(auto_now=True)
@@ -189,7 +187,11 @@ class DeliveryAddress(models.Model):
     first_name = models.CharField(max_length=150)
     addresse = models.CharField(max_length=150)
     additional_information = models.CharField(max_length=1000)
-    # city = models.ForeignKey(City, on_delete=models.CASCADE)
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
+
+    updated = models.fields.DateTimeField(auto_now=True)
+    created = models.fields.DateTimeField(auto_now_add=True)
+    deleted = models.fields.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.first_name

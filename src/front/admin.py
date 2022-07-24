@@ -39,7 +39,19 @@ class Cart(admin.ModelAdmin):
     list_display = ["user", "created"]
     
 @admin.register(models.Order)
-class Cart(admin.ModelAdmin):
+class Order(admin.ModelAdmin):
     list_display = ["user", "product", "quantity", "created"]
+    
+@admin.register(models.District)
+class District(admin.ModelAdmin):
+    list_display = ["name", "active", "created", "updated"]
+    
+@admin.register(models.City)
+class City(admin.ModelAdmin):
+    list_display = ["name", "active", "created", "updated"]
+    
+@admin.register(models.DeliveryAddress)
+class DeliveryAddress(admin.ModelAdmin):
+    list_display = ["first_name", "last_name", "created", "updated"]
     
     
