@@ -52,6 +52,6 @@ class City(admin.ModelAdmin):
     
 @admin.register(models.DeliveryAddress)
 class DeliveryAddress(admin.ModelAdmin):
-    list_display = ["first_name", "last_name", "created", "updated"]
+    list_display = ["addresse", "created", "updated"]
     
     

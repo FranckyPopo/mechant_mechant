@@ -195,11 +195,18 @@ class District(models.Model):
         return cls.objects.filter(active=True)
     
 class DeliveryAddress(models.Model):
-    last_name = models.CharField(max_length=150)
-    first_name = models.CharField(max_length=150)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="delivery_address_user"
+        )
     addresse = models.CharField(max_length=150)
     additional_information = models.CharField(max_length=1000)
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    district = models.ForeignKey(
+        District,
+        on_delete=models.CASCADE,
+        related_name="delivery_address_district"
+    )
 
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
