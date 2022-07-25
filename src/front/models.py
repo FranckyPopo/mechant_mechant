@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils import timezone
 from django.http import HttpRequest
+from django.db.models.query import QuerySet
 from phonenumber_field.modelfields import PhoneNumberField
 from colorfield.fields import ColorField
 
@@ -271,6 +272,10 @@ class Payment(models.Model):
     
     def __str__(self) -> str:
         return self.name
+    
+    @classmethod
+    def get_payments_active(cls: QuerySet) -> QuerySet:
+        return cls.objects.filter(active=True)
 
 class Livraison(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
