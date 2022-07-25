@@ -1,11 +1,13 @@
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View
 from django.urls import reverse
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
 import json
 
-from front import models
+from front import models, forms
 from mechant import context_processors
 
 class FrontProducts(View):
@@ -172,6 +174,25 @@ class FrontPayments(View):
         response = HttpResponseRedirect(url)
         response.set_cookie("buy", 1)
         
+        context = {
+            "cities": models.City.get_cities_active(),
+            "districts": models.District.get_districts_active(),
+            "list_address": models.DeliveryAddress.objects.filter(user=request.user),
+            "form": forms.FormAddress
+        }
+        
         if request.user.is_authenticated:
-            return render(request, self.template_name)
+            return render(request, self.template_name, context)
         return response
+    
+    
+class FrontAddresseAdd(View):
+    
+    def post(self, request):
+        form = forms.FormAddress(request.POST)
+        
+        if form.is_valid:
+            models.DeliveryAddress.add_address(request)
+            return redirect("front_payments")
+        return HttpResponse("")
+    

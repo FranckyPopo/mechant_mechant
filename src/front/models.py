@@ -216,6 +216,29 @@ class DeliveryAddress(models.Model):
     def __str__(self) -> str:
         return self.user.username
     
+    @classmethod
+    def add_address(cls, request: HttpRequest) -> None:
+        """Cette méthode va permetre de d'enregistrer des
+        addresses"""
+        
+        user = request.user
+        phone = request.POST.get("phone", False)
+        addresse = request.POST.get("addresse", False)
+        additional_information = request.POST.get("additional_information", False)
+        district_pk = request.POST.get("district", False)
+        district = District.objects.get(pk=district_pk)
+        
+        address = cls.objects.create(
+            user=user,
+            phone=phone,
+            addresse=addresse,
+            district=district,
+            additional_information=additional_information,
+        )
+        
+        user.delivery_address.add(address)
+        user.save()
+    
 class ProductColor(models.Model):
     name = models.CharField(max_length=50, blank=True)
     code_hex = ColorField(default="#FF0000")
