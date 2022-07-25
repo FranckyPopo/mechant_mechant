@@ -200,6 +200,7 @@ class DeliveryAddress(models.Model):
         on_delete=models.CASCADE,
         related_name="delivery_address_user"
         )
+    phone = PhoneNumberField(region="CI")
     addresse = models.CharField(max_length=150)
     additional_information = models.CharField(max_length=1000)
     district = models.ForeignKey(
@@ -213,7 +214,7 @@ class DeliveryAddress(models.Model):
     deleted = models.fields.BooleanField(default=False)
 
     def __str__(self) -> str:
-        return self.first_name
+        return self.user.username
     
 class ProductColor(models.Model):
     name = models.CharField(max_length=50, blank=True)
