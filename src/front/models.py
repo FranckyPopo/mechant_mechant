@@ -238,6 +238,44 @@ class DeliveryAddress(models.Model):
         
         user.delivery_address.add(address)
         user.save()
+
+class DeliveryMethod(models.Model):
+    name = models.CharField(max_length=150)
+    info =  models.CharField(max_length=1000)
+    active = models.BooleanField(default=True)
+
+    updated = models.fields.DateTimeField(auto_now=True)
+    created = models.fields.DateTimeField(auto_now_add=True)
+    deleted = models.fields.BooleanField(default=False)
+    
+    def __str__(self) -> str:
+        return self.name
+
+class Payment(models.Model):
+    name = models.CharField(max_length=150)
+    active = models.BooleanField(default=True)
+
+    updated = models.fields.DateTimeField(auto_now=True)
+    created = models.fields.DateTimeField(auto_now_add=True)
+    deleted = models.fields.BooleanField(default=False)
+    
+    def __str__(self) -> str:
+        return self.name
+
+class Livraison(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    delivery_address = models.ForeignKey(DeliveryAddress, on_delete=models.CASCADE)
+    livraison = models.BooleanField(default=False)
+    delivery_method = models.ForeignKey(DeliveryMethod, on_delete=models.CASCADE)
+    payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
+    
+    updated = models.fields.DateTimeField(auto_now=True)
+    created = models.fields.DateTimeField(auto_now_add=True)
+    deleted = models.fields.BooleanField(default=False)
+    
+    def __str__(self) -> str:
+        return self.user.username
     
 class ProductColor(models.Model):
     name = models.CharField(max_length=50, blank=True)

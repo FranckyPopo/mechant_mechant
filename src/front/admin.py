@@ -54,4 +54,16 @@ class City(admin.ModelAdmin):
 class DeliveryAddress(admin.ModelAdmin):
     list_display = ["addresse", "created", "updated"]
     
+@admin.register(models.Livraison)
+class Livraison(admin.ModelAdmin):
+    list_display = ["livraison", "created", "updated"]
+    
+@admin.register(models.Payment)
+class Payment(admin.ModelAdmin):
+    list_display = ["name", "active", "created", "updated"]
+    
+@admin.register(models.DeliveryMethod)
+class DeliveryMethod(admin.ModelAdmin):
+    list_display = ["name", "info", "created", "active", "updated"]
+    
     
