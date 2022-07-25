@@ -39,6 +39,8 @@ urlpatterns = [
 
     # Payements
     path("payments/", views.FrontPayments.as_view(), name="front_payments"),
+    path("addresse-add/", views.FrontAddresseAdd.as_view(), name="front_addresse_add"),
+
     
     # Authentication
     path('register/', authentication_view.AuthenticationPageRegister.as_view(), name="authentication_register"),
