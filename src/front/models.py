@@ -1,6 +1,6 @@
 
 from django.db import models
-from django.contrib.auth import get_user_model
+from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils import timezone
 from django.http import HttpRequest
@@ -82,7 +82,7 @@ class Products(models.Model):
         return self.original_price
 
 class Order(models.Model):
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     
@@ -94,7 +94,7 @@ class Order(models.Model):
         return f"{self.product} ({self.quantity})"
     
 class Cart(models.Model):
-    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     order = models.ManyToManyField(Order)
     
     updated = models.fields.DateTimeField(auto_now=True)
@@ -173,6 +173,11 @@ class City(models.Model):
     def __str__(self) -> str:
         return self.name
     
+    @classmethod
+    def get_cities_active(cls):
+        return cls.objects.filter(active=True)
+        
+    
 class District(models.Model):
     name = models.CharField(max_length=150)
     city = models.ForeignKey(City, on_delete=models.CASCADE)
@@ -181,6 +186,13 @@ class District(models.Model):
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
     deleted = models.fields.BooleanField(default=False)
+    
+    def __str__(self) -> str:
+        return self.name
+    
+    @classmethod
+    def get_districts_active(cls):
+        return cls.objects.filter(active=True)
     
 class DeliveryAddress(models.Model):
     last_name = models.CharField(max_length=150)
@@ -214,7 +226,7 @@ class ProductColor(models.Model):
 
 class Comments(models.Model):
     user = models.ForeignKey(
-        get_user_model(), 
+        settings.AUTH_USER_MODEL, 
         on_delete=models.CASCADE, 
         related_name="user_comment"
     )
