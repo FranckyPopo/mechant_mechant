@@ -173,15 +173,21 @@ class FrontPayments(View):
         url = reverse("authentication_login")  
         response = HttpResponseRedirect(url)
         response.set_cookie("buy", 1)
+        user = request.user
+        print(type(user))
         
         context = {
             "cities": models.City.get_cities_active(),
             "districts": models.District.get_districts_active(),
-            "list_address": models.DeliveryAddress.objects.filter(user=request.user),
-            "form": forms.FormAddress
+            "list_address": models.DeliveryAddress.objects.filter(user=user),
+            "form": forms.FormAddress,
+            "cart": models.Cart.objects.get(user=user),
+            "price_total": models.Cart.get_price_total_cart(user),
+            "method_delivery": models.DeliveryMethod.get_delivery_method_active(),
+            
         }
         
-        if request.user.is_authenticated:
+        if user.is_authenticated:
             return render(request, self.template_name, context)
         return response
     

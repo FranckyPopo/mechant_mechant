@@ -162,6 +162,13 @@ class Cart(models.Model):
                 order.quantity += item["quantity"]
                 order.save()
      
+    @classmethod
+    def get_price_total_cart(cls, user) -> int:
+        cart = cls.objects.get(user=user)
+        list_price = [order.product.get_final_product_price() * order.quantity for order in cart.order.all()]
+        
+        return sum(list_price)
+        
 class City(models.Model):
     name = models.CharField(max_length=150)
     active = models.BooleanField(default=True)
@@ -177,7 +184,6 @@ class City(models.Model):
     def get_cities_active(cls):
         return cls.objects.filter(active=True)
         
-    
 class District(models.Model):
     name = models.CharField(max_length=150)
     city = models.ForeignKey(City, on_delete=models.CASCADE)
@@ -250,7 +256,11 @@ class DeliveryMethod(models.Model):
     
     def __str__(self) -> str:
         return self.name
-
+    
+    @classmethod
+    def get_delivery_method_active(cls):
+        return cls.objects.filter(active=True)
+    
 class Payment(models.Model):
     name = models.CharField(max_length=150)
     active = models.BooleanField(default=True)
