@@ -36,7 +36,7 @@ class SiteContact(admin.ModelAdmin):
     
 @admin.register(models.Cart)
 class Cart(admin.ModelAdmin):
-    list_display = ["user", "ordered", "created"]
+    list_display = ["user", "created"]
     
 @admin.register(models.Order)
 class Order(admin.ModelAdmin):
