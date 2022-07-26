@@ -95,8 +95,9 @@ class Order(models.Model):
         return f"{self.product} ({self.quantity})"
     
 class Cart(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     order = models.ManyToManyField(Order)
+    ordered = models.BooleanField(default=False)
     
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
