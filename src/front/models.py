@@ -98,6 +98,7 @@ class Order(models.Model):
 class Cart(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     order = models.ManyToManyField(Order, blank=True, null=True)
+    ordered = models.BooleanField(default=False)
     
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
@@ -114,7 +115,7 @@ class Cart(models.Model):
         user = request.user
         quantity = request.POST.get("quantity", False)
         product = Products.objects.get(pk=product_pk)
-        cart = cls.objects.get(user=user, ordered=False)
+        cart = cls.objects.get(user=user)
         order, create = Order.objects.get_or_create(
             user=user,
             product=product

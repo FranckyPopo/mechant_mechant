@@ -36,11 +36,11 @@ class SiteContact(admin.ModelAdmin):
     
 @admin.register(models.Cart)
 class Cart(admin.ModelAdmin):
-    list_display = ["user", "created"]
+    list_display = ["user", "ordered", "created"]
     
 @admin.register(models.Order)
 class Order(admin.ModelAdmin):
-    list_display = ["user", "product", "quantity", "created"]
+    list_display = ["user", "ordered", "product", "quantity", "created"]
     
 @admin.register(models.District)
 class District(admin.ModelAdmin):
