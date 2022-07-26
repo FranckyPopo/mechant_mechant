@@ -109,12 +109,12 @@ class Cart(models.Model):
     @classmethod
     def add_to_cart(cls, request: HttpRequest, product_pk: int) -> None:
         """Cette méthode va permetre d'ajouter des produits dans
-        le panier de 'utilisate quand il est connecté"""
+        le panier de l'utilisateur quand il est connecté"""
         
         user = request.user
         quantity = request.POST.get("quantity", False)
         product = Products.objects.get(pk=product_pk)
-        cart, _ = cls.objects.get_or_create(user=user)
+        cart, _ = cls.objects.get_or_create(user=user, ordered=False)
         order, create = Order.objects.get_or_create(
             user=user,
             product=product
