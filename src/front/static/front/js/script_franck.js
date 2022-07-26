@@ -123,7 +123,11 @@ var step_num_content=document.querySelectorAll(".step-number-content");
  
 function validateform(){
     validate=true;
-    var validate_inputs=document.querySelectorAll(".main.active input");
+    var validate_inputs=document.querySelectorAll(".main.active .form-perso");
+    console.log(validate_inputs)
+    validate_inputs.forEach(input => {
+    })
+
     validate_inputs.forEach(function(vaildate_input){
         vaildate_input.classList.remove('warning');
         if(vaildate_input.hasAttribute('require')){
@@ -137,4 +141,5 @@ function validateform(){
     
 }
 
+validateform()
 

@@ -39,7 +39,7 @@
                             <div class="input-text">
                                 <div class="input-div">
                                     {% if user.delivery_address.all %}
-                                        <select id="address" name="pk_address">
+                                        <select id="address" name="pk_address" class="form-perso">
                                             {% for address in list_address %}
                                                 <option value="{{ address.pk }}">
                                                     {{ address.district.city.name }}
@@ -81,7 +81,7 @@
                             <div class="input-text">
                                 <div class="input-div">
                                     {% for item in method_delivery %}
-                                        <input type="radio" name="pk_delivery" id="{{ item.pk }}" value="{{ item.pk }}">
+                                        <input type="radio" name="pk_delivery" id="{{ item.pk }}" value="{{ item.pk }}" class="form-perso">
                                         <label for="{{ item.pk }}"> {{ item.name }} </label>
                                         <br>
                                     {% endfor %}
@@ -110,7 +110,7 @@
                                 <button class="next_button" type="button">Suivant</button>
                             </div>
                         </div>
-        
+         
                         <!-- Choice payment-->
                         <div class="main">
                             <div class="text">
@@ -120,7 +120,7 @@
                             <div class="input-text">
                                 <div class="input-div">
                                     {% for payment in payments %}
-                                        <input type="radio" name="pk_payment" value="{{ payment.pk }}" id="{{ payment.pk }}">
+                                        <input type="radio" name="pk_payment" value="{{ payment.pk }}" id="{{ payment.pk }}" class="form-perso">
                                         <label for="{{ payment.pk }}">{{ payment.name }} {{ payment.pk }}</label>
                                     {% endfor %}
                                 </div>
