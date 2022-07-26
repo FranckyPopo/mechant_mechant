@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View
 from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_protect, csrf_exempt
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 import json
 
@@ -66,9 +66,7 @@ class FrontCartList(View):
                 "quantity": order["quantity"]
             }
             cart_session.append(instance)
-            
         return cart_session
-
 
 # Views cart
 class FrontProductAddCart(View):
@@ -173,20 +171,20 @@ class FrontPayments(View):
     def get(self, request):      
         url = reverse("authentication_login")  
         response = HttpResponseRedirect(url)
-        response.set_cookie("buy", 1)
+        response.set_cookie("buy", 1, max_age=30)
         user = request.user
-        context = {
-            "cities": models.City.get_cities_active(),
-            "districts": models.District.get_districts_active(),
-            "list_address": models.DeliveryAddress.objects.filter(user=user),
-            "form": forms.FormAddress,
-            "cart": models.Cart.objects.get(user=user, ordered=False),
-            "price_total": models.Cart.get_price_total_cart(user),
-            "method_delivery": models.DeliveryMethod.get_delivery_method_active(),
-            "payments": models.Payment.get_payments_active(),
-        }
         
         if user.is_authenticated:
+            context = {
+                "cities": models.City.get_cities_active(),
+                "districts": models.District.get_districts_active(),
+                "list_address": models.DeliveryAddress.objects.filter(user=user),
+                "form": forms.FormAddress,
+                "cart": models.Cart.objects.get(user=user, ordered=False),
+                "price_total": models.Cart.get_price_total_cart(user),
+                "method_delivery": models.DeliveryMethod.get_delivery_method_active(),
+                "payments": models.Payment.get_payments_active(),
+            }
             return render(request, self.template_name, context)
         return response
     

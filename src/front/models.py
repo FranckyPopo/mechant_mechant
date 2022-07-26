@@ -148,13 +148,14 @@ class Cart(models.Model):
         
         cart_session = request.session.get("cart")
         user = request.user
-        cart, _ = cls.objects.get_or_create(user=user)
+        cart, _ = cls.objects.get_or_create(user=user, ordered=False)
         
         for item in cart_session:
             product = Products.objects.get(pk=item["pk"])
             order, create = Order.objects.get_or_create(
                 user=user,
-                product=product
+                product=product,
+                ordered=False
             )
             
             if create:
