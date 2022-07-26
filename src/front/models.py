@@ -277,13 +277,13 @@ class Payment(models.Model):
     def get_payments_active(cls: QuerySet) -> QuerySet:
         return cls.objects.filter(active=True)
 
-class Livraison(models.Model):
+class DeliveryInvoice(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     delivery_address = models.ForeignKey(DeliveryAddress, on_delete=models.CASCADE)
-    livraison = models.BooleanField(default=False)
     delivery_method = models.ForeignKey(DeliveryMethod, on_delete=models.CASCADE)
     payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
+    confimation = models.BooleanField(default=False)
     
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
