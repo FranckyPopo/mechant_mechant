@@ -22,11 +22,13 @@
                     <li class="active">Addresse de livraison</li>
                     <li>livraison</li>
                     <li>Payment</li>
-                    <li>Finalisaton</li>
                 </ul>
             </div>
                 <div class="right-side">
-                    <form action="" method="post">
+                    <form 
+                        hx-post="{% url 'front_payments' %}"
+                        hx-swap="none"
+                        method="post">
                         {% csrf_token %}
 
                         <!-- Choice address--> 
@@ -36,20 +38,19 @@
                             </div>
                             <div class="input-text">
                                 <div class="input-div">
-        
                                     {% if user.delivery_address.all %}
-                                        <select id="monselect">
+                                        <select id="address" name="pk_address">
                                             {% for address in list_address %}
                                                 <option value="{{ address.pk }}">
                                                     {{ address.district.city.name }}
                                                     {{ address.district.name }}
                                                     {{ address.addresse }}
+                                                    {{ address.pk }}
                                                 </option>
                                             {% endfor %}
                                         </select>
                                         {% else %}
                                             <h3>Vous n'aucune d'addresse de livraison veuillez en ajouter une.</h3>
-        
                                             <form method="post" action="{% url 'front_addresse_add' %}">
                                                 {% csrf_token %}
                                                 {{ form.as_p }}
@@ -62,9 +63,7 @@
                                                 
                                                 <input type="Submit">
                                             </form>
-                                        
                                     {% endif %}
-                                    
                                 </div> 
                             </div>
        
@@ -82,9 +81,9 @@
                             <div class="input-text">
                                 <div class="input-div">
                                     {% for item in method_delivery %}
-                                    <input type="radio" name="{{ item.pk }}" id="{{ item.pk }}" value="{{ item.name }}">
-                                    <label for="{{ item.pk }}"> {{ item.name }} </label>
-                                    <br>
+                                        <input type="radio" name="pk_delivery" id="{{ item.pk }}" value="{{ item.pk }}">
+                                        <label for="{{ item.pk }}"> {{ item.name }} </label>
+                                        <br>
                                     {% endfor %}
                                 </div>
                             </div>
@@ -121,36 +120,17 @@
                             <div class="input-text">
                                 <div class="input-div">
                                     {% for payment in payments %}
-                                        <input type="radio" name="{{ payment.pk }}" id="{{ payment.pk }}">
-                                        <label for="{{ payment.pk }}">{{ payment.name }}</label>
+                                        <input type="radio" name="pk_payment" value="{{ payment.pk }}" id="{{ payment.pk }}">
+                                        <label for="{{ payment.pk }}">{{ payment.name }} {{ payment.pk }}</label>
                                     {% endfor %}
                                 </div>
                             </div>
                             <div class="buttons button_space">
                                 <button class="back_button" type="button">Retour</button>
-                                <button class="next_button" type="button">Suivant</button>
+                                <input type="submit" value="Commander">
                             </div>
                         </div>
-                          
-                        <div class="main">
-                            <div class="text">
-                                <h3>Félicitation commande éffectué.</h3>
-                                <i class="fa-thin fa-bell"></i>
-                                
-                            </div>
-                            
-                            <div class="buttons button_space">
-                                <button class="back_button" type="button">Back</button>
-                                
-                                <button class="submit_button">Submit</button>
-                            </div>
-                        </div>
-                        <div class="main">
-                            <div class="text congrats">
-                                <h2>Congratulations!</h2>
-                                <p>Thanks Mr./Mrs. <span class="shown_name"></span> your information have been submitted successfully for the future reference we will contact you soon.</p>
-                            </div>
-                        </div>
+                        
                     </form>
                 </div>
         </div>

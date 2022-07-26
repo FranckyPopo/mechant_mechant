@@ -28,7 +28,20 @@ htmx.on("product_delete_cart", function (e){
     toast("Produit supprimer du panier", e)
 });
 
-
+htmx.on("confimation", function (e){
+    Swal.fire({
+        icon: 'success',
+        title: "Merci d'avoir commander",
+        text: "Vôtre commande est en cour de préparation",
+        confirmButtonText: 'Continuer mes achats',
+      }).then((result) => {
+            if (result.isConfirmed) {
+                location.href = "/"
+            }else {
+                location.href = "/"
+            }
+        })
+});
 
 
 next_click.forEach(function(next_click_form){
@@ -67,15 +80,8 @@ submit_click.forEach(function(submit_click_form){
 });
 
 var heart=document.querySelector(".fa-heart");
-heart.addEventListener('click',function(){
-   heart.classList.toggle('heart');
-});
-
 
 var share=document.querySelector(".fa-share-alt");
-share.addEventListener('click',function(){
-   share.classList.toggle('share');
-});
 
  
 
