@@ -115,10 +115,11 @@ class Cart(models.Model):
         user = request.user
         quantity = request.POST.get("quantity", False)
         product = Products.objects.get(pk=product_pk)
-        cart = cls.objects.get(user=user)
+        cart = cls.objects.get(user=user, ordered=False)
         order, create = Order.objects.get_or_create(
             user=user,
-            product=product
+            product=product,
+            ordered=False
         )
         
         if quantity:
@@ -137,7 +138,7 @@ class Cart(models.Model):
         le panier de l'utilisateur quand il est connecté"""
         
         user = request.user
-        product = cls.objects.get(user=user).order.get(product__pk=product_pk)
+        product = cls.objects.get(user=user, ordered=False).order.get(product__pk=product_pk)
         product.delete()
             
     @classmethod
@@ -167,7 +168,7 @@ class Cart(models.Model):
      
     @classmethod
     def get_price_total_cart(cls, user) -> int:
-        cart = cls.objects.get(user=user)
+        cart = cls.objects.get(user=user, ordered=False)
         list_price = [order.product.get_final_product_price() * order.quantity for order in cart.order.all()]
         
         return sum(list_price)
