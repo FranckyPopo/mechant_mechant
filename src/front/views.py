@@ -45,7 +45,8 @@ class FrontCartList(View):
     def get(self, request):
         if request.user.is_authenticated:
             cart = self.model.objects.get(
-                user=request.user
+                user=request.user,
+                ordered=False
             )
             return render(request, self.template_name, context={"cart": cart})
         else:
@@ -174,22 +175,60 @@ class FrontPayments(View):
         response = HttpResponseRedirect(url)
         response.set_cookie("buy", 1)
         user = request.user
-        print(type(user))
-        
         context = {
             "cities": models.City.get_cities_active(),
             "districts": models.District.get_districts_active(),
             "list_address": models.DeliveryAddress.objects.filter(user=user),
             "form": forms.FormAddress,
-            "cart": models.Cart.objects.get(user=user),
+            "cart": models.Cart.objects.get(user=user, ordered=False),
             "price_total": models.Cart.get_price_total_cart(user),
             "method_delivery": models.DeliveryMethod.get_delivery_method_active(),
-            
+            "payments": models.Payment.get_payments_active(),
         }
         
         if user.is_authenticated:
             return render(request, self.template_name, context)
         return response
+    
+    def post(self, request):
+        delivery_address = get_object_or_404(
+            models.DeliveryAddress,
+            pk=request.POST.get("pk_address")
+        )
+        delivery_method = get_object_or_404(
+            models.DeliveryMethod,
+            pk=request.POST.get("pk_delivery")
+        )
+        payment = get_object_or_404(
+            models.Payment,
+            pk=request.POST.get("pk_payment")
+        )
+        user = request.user
+        cart = models.Cart.objects.get(user=user, ordered=False)
+        cart.ordered = True
+        cart.save()
+        orders = models.Order.objects.filter(
+            ordered=False,
+            user=user
+        )
+        orders.update(ordered=True)
+
+        models.DeliveryInvoice.objects.create(
+            user=user,
+            cart=cart,
+            delivery_address=delivery_address,
+            delivery_method=delivery_method,
+            payment=payment,
+        )
+        
+        return HttpResponse(
+            "",
+            headers={
+                "HX-Trigger": json.dumps({
+                    "confimation": "ok"
+                })
+            }
+        )
     
     
 class FrontAddresseAdd(View):
