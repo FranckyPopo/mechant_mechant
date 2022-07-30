@@ -31,8 +31,10 @@ def app_product_to_cart(request):
     else :
         messages.add_message(request,messages.ERROR,"Oups un truc c'est mal passé a l'ajout du product")
         return render("/")
-        
-    
+def cart_list(request):
+    carts = Cart.objects.filter(session_id = request.session._get_or_create_session_key())
+    return render(request, "front/pages/cart_list2.html", context={"carts": carts})
+
 class FrontCartList(View):
     template_name = "front/pages/cart_list.html"
     model = models.OrderItem
@@ -42,6 +44,7 @@ class FrontCartList(View):
             session_id=request.session._get_or_create_session_key()
         )
         return render(request, self.template_name, context={"orders": orders})
+
     
 class FrontProducts(View):
     template_name = "front/pages/categories.html"

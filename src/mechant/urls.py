@@ -31,6 +31,7 @@ urlpatterns = [
         name="front_product_delete_cart"
     ),
     path('cart-list/', views.FrontCartList.as_view(), name="front_cart_list"),
+    path('cart-list2/', views.cart_list, name="front_cart_list2"),
     path('newslater-add/', features_view.AuhthenticationNewsLaterAdd.as_view(), name="auhthentication_newsLater_add"),
     
 
