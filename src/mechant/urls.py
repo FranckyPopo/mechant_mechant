@@ -44,6 +44,9 @@ urlpatterns = [
         name="authentication_edit_profile"
     ),
     
+    ## ADD PRODUCT TO CART 
+    path("add-product-cart/",views.app_product_to_cart,name="app_to_cart")
+    
 
     
 ]

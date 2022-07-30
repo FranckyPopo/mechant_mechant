@@ -13,6 +13,10 @@ class Comment(admin.ModelAdmin):
 @admin.register(models.Products)
 class Product(admin.ModelAdmin):
     list_display = ["name", "active", "original_price", "created"]
+
+@admin.register(models.Cart)
+class Cart(admin.ModelAdmin):
+    list_display = ["session_id", "product", "quantity", "created","updated"]
     
 @admin.register(models.ImageProduct)
 class ImageProduct(admin.ModelAdmin):

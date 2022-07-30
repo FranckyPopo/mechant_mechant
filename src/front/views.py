@@ -1,12 +1,37 @@
+
 import json
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.generic import View
 from django.contrib import messages
 
+
 from front import models
+from .models import Products, Cart
 from mechant import context_processors
 
+def app_product_to_cart(request):
+    
+    if request.method == "POST":
+        
+        session_id=request.session._get_or_create_session_key()
+        product_id = request.POST.get("product_id")
+        if product_id:
+            selected_product = Products.objects.get(id = product_id)
+            selectedCart, newCard = Cart.objects.get_or_create(product = selected_product,session_id = session_id)
+            
+            if newCard:
+                pass
+            else:
+                selectedCart.quantity += 1
+                selectedCart.save()
+                
+        messages.add_message(request,messages.SUCCESS,"Produit ajouter avec success")
+        return redirect("/")
+    else :
+        messages.add_message(request,messages.ERROR,"Oups un truc c'est mal passé a l'ajout du product")
+        return render("/")
+        
     
 class FrontCartList(View):
     template_name = "front/pages/cart_list.html"
@@ -41,6 +66,7 @@ class FrontIndex(View):
         
         messages.add_message(request,messages.SUCCESS,"Bojour le monde")
         return render(request, self.template_name, context=data)
+
     
 class FrontDetailProduct(View):
     template_name = "front/pages/product_detail.html"
