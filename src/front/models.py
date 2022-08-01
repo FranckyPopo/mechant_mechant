@@ -7,7 +7,6 @@ from django.db.models.query import QuerySet
 from phonenumber_field.modelfields import PhoneNumberField
 from colorfield.fields import ColorField
 
-
 class Categories(models.Model):
     name = models.fields.CharField(max_length=150)
     image = models.ImageField()
@@ -25,7 +24,7 @@ class Products(models.Model):
     name = models.CharField(max_length=150)
     description = models.TextField()
     photo = models.ImageField()
-    
+    slug = models.SlugField()
     original_price = models.PositiveIntegerField()
     promotion_reduction = models.PositiveIntegerField(
         validators=[MinValueValidator(0)],
