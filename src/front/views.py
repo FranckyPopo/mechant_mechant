@@ -4,6 +4,7 @@ from django.views.generic import View
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404
 
 import json
 
@@ -34,9 +35,11 @@ class FrontIndex(View):
     
 class FrontDetailProduct(View):
     template_name = "front/pages/product_detail.html"
+    model = models.Products
     
-    def get(self, request):
-        return render(request, self.template_name)
+    def get(self, request, slug_product):
+        product = get_object_or_404(self.model, slug=slug_product)
+        return render(request, self.template_name, context={"product": product})
     
 class FrontCartList(View):
     template_name = "front/pages/cart_list.html"

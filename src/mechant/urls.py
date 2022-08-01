@@ -14,7 +14,7 @@ urlpatterns = [
     
     path('products/', views.FrontProducts.as_view(), name="front_products"),
     path(
-        'products/product-detail/<int:product_id>/',
+        'products/<slug:slug_product>/',
         views.FrontDetailProduct.as_view(), 
         name="front_product_detail"
     ),

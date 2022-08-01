@@ -21,7 +21,7 @@
             {% endif %}
                 <div class="product_info">
                     <h6 class="product_name">
-                        <a href="single.html">{{ product.name }}</a>
+                        <a href="{% url 'front_product_detail' product.slug %}">{{ product.name }}</a>
                     </h6>
                     <div class="product_price">
                         {% comment %} Le prix est affiché en fonction de si il y'a une promotion ou pas {% endcomment %}

@@ -51,6 +51,7 @@ class Products(models.Model):
     
     def __str__(self) -> str:
         return self.name
+
     
     def is_new(self) -> bool:
         """Cette méthode permet de déterminer si un produit est nouveau ou non"""
