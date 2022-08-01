@@ -124,7 +124,7 @@ var step_num_content=document.querySelectorAll(".step-number-content");
 function validateform(){
     validate=true;
     var validate_inputs=document.querySelectorAll(".main.active .form-perso");
-    console.log(validate_inputs)
+    console.log(validate_inputs.value)
     validate_inputs.forEach(input => {
     })
 
