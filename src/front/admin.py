@@ -20,11 +20,11 @@ class ImageProduct(admin.ModelAdmin):
     
 @admin.register(models.Promotion)
 class Promotion(admin.ModelAdmin):
-    list_display = ["product", "active", "created"]
+    list_display = ["product", "title", "mini_title","active", "created"]
     
 @admin.register(models.DealOfTheWeenk)
 class DealOfTheWeenk(admin.ModelAdmin):
-    list_display = ["start_of_deal","product", "created"]
+    list_display = ["start_of_deal", "product", "created"]
     
 @admin.register(models.BestSellers)
 class BestSellers(admin.ModelAdmin):
@@ -65,5 +65,4 @@ class Payment(admin.ModelAdmin):
 @admin.register(models.DeliveryMethod)
 class DeliveryMethod(admin.ModelAdmin):
     list_display = ["name", "info", "created", "active", "updated"]
-    
     

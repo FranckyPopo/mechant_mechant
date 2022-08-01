@@ -1,4 +1,3 @@
-
 from django.db import models
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -41,8 +40,6 @@ class Products(models.Model):
     )
     additional_information = models.TextField()
     categories = models.ManyToManyField(Categories, related_name="product_categories")
-    longeur = models.CharField(max_length=50, blank=True)
-    largeur = models.CharField(max_length=50, blank=True)
     stock = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1)])
     
     is_promotion = models.BooleanField(default=False)
@@ -57,23 +54,22 @@ class Products(models.Model):
         return self.name
     
     def is_new(self) -> bool:
+        """Cette méthode permet de déterminer si un produit est nouveau ou non"""
+        
         result = timezone.now() - self.created
         return result.days <= 7
     
     def get_product_reduction(self) -> int:
+        """Cette méthode va retourner le prix d'une reduction"""
+        
         if self.promotion_percentage:
             return self.original_price * self.promotion_percentage // 100
         return self.promotion_reduction
             
     def get_final_product_price(self) -> int:
-        """
-        _summary_
-
-        _extended_summary_
-
-        Returns:
-            int: _description_
-        """
+        """Cette méthode va retourner le prix d'un produit s'il est en promotion.
+        Dans le cas contraire elle va retourner le prix original."""
+        
         if self.is_promotion:
             if self.promotion_percentage:
                 reduction = self.original_price * self.promotion_percentage // 100
@@ -353,6 +349,8 @@ class Promotion(models.Model):
         on_delete=models.CASCADE, 
         related_name="promotion_product"
     )
+    title = models.CharField(max_length=150)
+    mini_title = models.CharField(max_length=150)
     active = models.BooleanField(default=True)
     
     updated = models.fields.DateTimeField(auto_now=True)
