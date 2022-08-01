@@ -25,11 +25,7 @@
                 </ul>
             </div>
                 <div class="right-side">
-                    <form 
-                        hx-post="{% url 'front_payments' %}"
-                        hx-swap="none"
-                        method="post">
-                        {% csrf_token %}
+                    
 
                         <!-- Choice address--> 
                         <div class="main active">
@@ -39,29 +35,36 @@
                             <div class="input-text">
                                 <div class="input-div">
                                     {% if user.delivery_address.all %}
+                                    <form 
+                                        hx-post="{% url 'front_payments' %}"
+                                        hx-swap="none"
+                                        method="post">
+                                        {% csrf_token %}
                                         <select id="address" name="pk_address" class="form-perso">
                                             {% for address in list_address %}
                                                 <option value="{{ address.pk }}">
                                                     {{ address.district.city.name }}
                                                     {{ address.district.name }}
                                                     {{ address.addresse }}
-                                                    {{ address.pk }}
                                                 </option>
                                             {% endfor %}
                                         </select>
                                         {% else %}
-                                            <h3>Vous n'aucune d'addresse de livraison veuillez en ajouter une.</h3>
-                                            <form method="post" action="{% url 'front_addresse_add' %}">
+                                            <h3>Vous n'avez pas d'addresse de livraison veuillez en ajouter une.</h3>
+                                            <form 
+                                                method="post" 
+                                                action="{% url 'front_addresse_add' %}">
                                                 {% csrf_token %}
                                                 {{ form.as_p }}
-        
+                                                
+                                                <label>District</label>
                                                 <select name="district" id="district">
                                                     {% for district in districts %}
                                                         <option value="{{ district.pk }}"> {{ district.name }} </option>
                                                     {% endfor %}
                                                 </select>
                                                 
-                                                <input type="Submit">
+                                                <input type="Submit" value="Enregistrer l'addresse">
                                             </form>
                                     {% endif %}
                                 </div> 
