@@ -24,7 +24,7 @@ class Products(models.Model):
     name = models.CharField(max_length=150)
     description = models.TextField()
     photo = models.ImageField()
-    slug = models.SlugField()
+    slug = models.SlugField(null=True, blank=True)
     original_price = models.PositiveIntegerField()
     promotion_reduction = models.PositiveIntegerField(
         validators=[MinValueValidator(0)],
