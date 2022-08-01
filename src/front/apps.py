@@ -6,4 +6,4 @@ class FrontConfig(AppConfig):
     name = 'front'
     
     def ready(self):
-        import front.signals
+        from front import signals
