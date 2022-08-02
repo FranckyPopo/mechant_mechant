@@ -16,6 +16,9 @@
 
 ******************************/
 
+console.log("Hello word !!")
+
+
 jQuery(document).ready(function($)
 {
 	"use strict";
@@ -187,12 +190,6 @@ jQuery(document).ready(function($)
     		// Uncomment line below and replace date
 	    	// var target_date = new Date("Dec 7, 2017").getTime();
 
-	    	// comment lines below
-	    	var date = new Date();
-	    	date.setDate(date.getDate() + 3);
-	    	var target_date = date.getTime();
-	    	//----------------------------------------
-	 
 			// variables for time units
 			var days, hours, minutes, seconds;
 
@@ -201,11 +198,20 @@ jQuery(document).ready(function($)
 			var m = $('#minute');
 			var s = $('#second');
 
+	    	// comment lines below
+	    	var date = new Date();
+	    	date.setTime(date.getTime() + 300000);
+
+	    	var target_date = date.getTime();
+	    	//----------------------------------------
+			console.log("Temps démarage programme", target_date)
+
 			setInterval(function ()
 			{
 			    // find the amount of "seconds" between now and target
 			    var current_date = new Date().getTime();
 			    var seconds_left = (target_date - current_date) / 1000;
+				console.log("Temps démarage setItervale", current_date)
 			 
 			    // do some time calculations
 			    days = parseInt(seconds_left / 86400);

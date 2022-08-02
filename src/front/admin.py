@@ -24,7 +24,7 @@ class Promotion(admin.ModelAdmin):
     
 @admin.register(models.DealOfTheWeenk)
 class DealOfTheWeenk(admin.ModelAdmin):
-    list_display = ["start_of_deal", "product", "created"]
+    list_display = ["start_of_deal", "active", "product", "created"]
     
 @admin.register(models.BestSellers)
 class BestSellers(admin.ModelAdmin):
