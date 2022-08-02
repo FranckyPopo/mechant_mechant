@@ -1,0 +1,143 @@
+
+{% extends 'front/base/base_simple.html' %}
+{% load static %}
+
+{% block 'content' %}
+
+<div class="container">
+    <div class="card">
+        <div class="form">
+            <div class="left-side">
+                <div class="left-heading">
+                    <h3>indeed</h3>
+                </div>
+                <div class="steps-content">
+                    <h3>Etape <span class="step-number">1</span></h3>
+                    <p class="step-number-content active">Veuillez sélectionner un addresse de livraison.</p>
+                    <p class="step-number-content d-none">Veuillez sélectionner un mode de livraison.</p>
+                    <p class="step-number-content d-none">Veuillez sélectionner un mode de paiement.</p>
+                    <p class="step-number-content d-none">Validation de la commande</p>
+                </div>
+                <ul class="progress-bar">
+                    <li class="active">Addresse de livraison</li>
+                    <li>livraison</li>
+                    <li>Payment</li>
+                </ul>
+            </div>
+                <div class="right-side">
+                    
+
+                        <!-- Choice address--> 
+                        <div class="main active">
+                            <div class="text">
+                                <h2>Choisir une addresse</h2>
+                            </div>
+                            <div class="input-text">
+                                <div class="input-div">
+                                    {% if user.delivery_address.all %}
+                                    <form 
+                                        hx-post="{% url 'front_payments' %}"
+                                        hx-swap="none"
+                                        method="post">
+                                        {% csrf_token %}
+                                        <select id="address" name="pk_address" class="form-perso">
+                                            {% for address in list_address %}
+                                                <option value="{{ address.pk }}">
+                                                    {{ address.district.city.name }}
+                                                    {{ address.district.name }}
+                                                    {{ address.addresse }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                        {% else %}
+                                            <h3>Vous n'avez pas d'addresse de livraison veuillez en ajouter une.</h3>
+                                            <form 
+                                                method="post" 
+                                                action="{% url 'front_addresse_add' %}">
+                                                {% csrf_token %}
+                                                {{ form.as_p }}
+                                                
+                                                <label>District</label>
+                                                <select name="district" id="district">
+                                                    {% for district in districts %}
+                                                        <option value="{{ district.pk }}"> {{ district.name }} </option>
+                                                    {% endfor %}
+                                                </select>
+                                                
+                                                <input type="Submit" value="Enregistrer l'addresse">
+                                            </form>
+                                    {% endif %}
+                                </div> 
+                            </div>
+       
+                            <div class="buttons">
+                                <button class="next_button" type="button">Suivant</button>
+                            </div>
+                        </div>
+        
+                        <!-- Choice delivery-->
+                        <div class="main">
+                            <div class="text">
+                                <h2>Mode de livraison</h2>
+                                <h3>Comment voulez-vous que votre commande soit livrée ?.</h3>
+                            </div>
+                            <div class="input-text">
+                                <div class="input-div">
+                                    {% for item in method_delivery %}
+                                        <input type="radio" name="pk_delivery" id="{{ item.pk }}" value="{{ item.pk }}" class="form-perso">
+                                        <label for="{{ item.pk }}"> {{ item.name }} </label>
+                                        <br>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="input-div">
+                                <div class="input-div">
+                                    <h3>Détail de la livraison</h3>
+                                    {% for order in cart.order.all %}
+                                        <div>
+                                            <p>{{ order.quantity }} x {{ order.product }} </p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="input-div">
+                                    <p>
+                                        Total: 
+                                        <span style="font-weight: bolder; font-size: 16px;">
+                                            {{ price_total }} XOF
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="buttons button_space">
+                                <button class="back_button" type="button">Retour</button>
+                                <button class="next_button" type="button">Suivant</button>
+                            </div>
+                        </div>
+         
+                        <!-- Choice payment-->
+                        <div class="main">
+                            <div class="text">
+                                <h2>Mode de payment</h2>
+                                <h3>Par quel moyent de paiment que voulez-vous régler vôtre commande ?.</h3>
+                            </div>
+                            <div class="input-text">
+                                <div class="input-div">
+                                    {% for payment in payments %}
+                                        <input type="radio" name="pk_payment" value="{{ payment.pk }}" id="{{ payment.pk }}" class="form-perso">
+                                        <label for="{{ payment.pk }}">{{ payment.name }} {{ payment.pk }}</label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="buttons button_space">
+                                <button class="back_button" type="button">Retour</button>
+                                <input type="submit" value="Commander">
+                            </div>
+                        </div>
+                        
+                    </form>
+                </div>
+        </div>
+    </div>
+</div>
+{% endblock 'content' %}
+

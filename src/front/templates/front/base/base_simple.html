@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Colo Shop Categories</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="Colo Shop Template">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'front/styles/styles_franck.css' %}">
+
+    <script src="https://unpkg.com/htmx.org@1.7.0"></script>
+
+</head>
+<body>
+
+<div class="super_container">
+	<header >
+		<div>
+			<a href="{% url 'front_payments' %}">
+				Colo<span>Shop</span>
+			</a>
+			
+		</div>
+	</header>
+
+
+    {% block 'content' %}{% endblock 'content' %}
+
+</div>
+
+</body>
+<!-- Sweet alert -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+<script src="{% static 'front/js/script_franck.js' %}"></script>
+</html>

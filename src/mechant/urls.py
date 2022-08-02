@@ -14,7 +14,7 @@ urlpatterns = [
     
     path('products/', views.FrontProducts.as_view(), name="front_products"),
     path(
-        'products/product-detail/<int:product_id>/',
+        'products/<slug:slug_product>/',
         views.FrontDetailProduct.as_view(), 
         name="front_product_detail"
     ),
@@ -31,13 +31,23 @@ urlpatterns = [
         name="front_product_delete_cart"
     ),
     path('cart-list/', views.FrontCartList.as_view(), name="front_cart_list"),
-    path('newslater-add/', features_view.AuhthenticationNewsLaterAdd.as_view(), name="auhthentication_newsLater_add"),
-    
+    path(
+        'newslater-add/',
+        features_view.AuhthenticationNewsLaterAdd.as_view(),
+        name="auhthentication_newsLater_add"
+    ),
 
+    # Payements
+    path("payments/", views.FrontPayments.as_view(), name="front_payments"),
+    path("addresse-add/", views.FrontAddresseAdd.as_view(), name="front_addresse_add"),
+
+    
+    # Authentication
     path('register/', authentication_view.AuthenticationPageRegister.as_view(), name="authentication_register"),
     path('login/', authentication_view.AuthenticationLogin.as_view(), name="authentication_login"),
     path('logout/', authentication_view.authentication_logout, name="authentication_logout"),
     
+    # Settings user
     path(
         'user/accounts/edit-profile',
         authentication_view.authentication_edit_profile.as_view(),
