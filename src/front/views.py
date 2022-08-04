@@ -31,6 +31,8 @@ class FrontIndex(View):
             "categories": models.Categories.objects.all().filter(active=True),
             "products": models.Products.objects.all().filter(active=True),
         }
+        deals = models.DealOfTheWeenk.get_deals_of_the_week()
+        print(deals)
         return render(request, self.template_name, context=data)
     
 class FrontDetailProduct(View):
@@ -241,4 +243,3 @@ class FrontAddresseAdd(View):
             models.DeliveryAddress.add_address(request)
             return redirect("front_payments")
         return HttpResponse("")
-    

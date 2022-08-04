@@ -7,6 +7,8 @@ from django.db.models.query import QuerySet
 from phonenumber_field.modelfields import PhoneNumberField
 from colorfield.fields import ColorField
 
+import datetime
+
 class Categories(models.Model):
     name = models.fields.CharField(max_length=150)
     image = models.ImageField()
@@ -102,7 +104,7 @@ class Cart(models.Model):
     
     def __str__(self) -> str:
         return self.user.username
-    
+        
     @classmethod
     def add_to_cart(cls, request: HttpRequest, product_pk: int) -> None:
         """Cette méthode va permetre d'ajouter des produits dans
@@ -361,12 +363,15 @@ class Promotion(models.Model):
         return self.product.name    
     
 class DealOfTheWeenk(models.Model):
-    start_of_deal = models.DateTimeField()
+    start_of_deal = models.DateTimeField(default=timezone.now)
+    end_of_deal = models.DateTimeField(default=timezone.now)
+    
     product = models.ForeignKey(
         Products, 
         on_delete=models.CASCADE, 
         related_name="DealOfTheWeenk_product"
     )
+    active = models.BooleanField(default=True)
     
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
@@ -374,6 +379,14 @@ class DealOfTheWeenk(models.Model):
     
     def __str__(self) -> str:
         return self.product.name
+    
+    @classmethod
+    def get_deals_of_the_week(cls):
+        start_date = datetime.datetime.now().time
+
+        end_date = datetime.datetime(2022, 8, 3, 23, minute=59)
+        
+        return cls.objects.filter(start_of_deal__range=(start_date, end_date))
 
 class BestSellers(models.Model):
     product = models.ForeignKey(
@@ -400,4 +413,6 @@ class SiteContact(models.Model):
     updated = models.fields.DateTimeField(auto_now=True)
     created = models.fields.DateTimeField(auto_now_add=True)
     deleted = models.fields.BooleanField(default=False)
+    
+    
     
