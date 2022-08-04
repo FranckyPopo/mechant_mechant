@@ -7,7 +7,7 @@ from django.db.models.query import QuerySet
 from phonenumber_field.modelfields import PhoneNumberField
 from colorfield.fields import ColorField
 
-import datetime
+from datetime import datetime, timedelta
 
 class Categories(models.Model):
     name = models.fields.CharField(max_length=150)
@@ -381,12 +381,15 @@ class DealOfTheWeenk(models.Model):
         return self.product.name
     
     @classmethod
-    def get_deals_of_the_week(cls):
-        start_date = datetime.datetime.now().time
-
-        end_date = datetime.datetime(2022, 8, 3, 23, minute=59)
+    def get_deals_of_the_day(cls):
+        presentday = timezone.now().date()
+        tomorrow = presentday + timedelta(1)
         
-        return cls.objects.filter(start_of_deal__range=(start_date, end_date))
+        deals_of_day = cls.objects.filter(start_of_deal__date__in=(presentday, tomorrow))
+        deal = None
+        print(deals)
+        
+        return cls.objects.filter(start_of_deal__date__in=(presentday, tomorrow))
 
 class BestSellers(models.Model):
     product = models.ForeignKey(

@@ -31,7 +31,7 @@ class FrontIndex(View):
             "categories": models.Categories.objects.all().filter(active=True),
             "products": models.Products.objects.all().filter(active=True),
         }
-        deals = models.DealOfTheWeenk.get_deals_of_the_week()
+        deals = models.DealOfTheWeenk.get_deals_of_the_day()
         print(deals)
         return render(request, self.template_name, context=data)
     
